@@ -22,8 +22,24 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '1s$v9x(0z#j26-b59&&5f=zp$+ljk4+v16%xo$1m!x%39f#%5^'
 
+#delpoyment mods
+"""
+SECRET_KEY = os.environ['SECRET_KEY']
+SECURE_HSTS_SECONDS = 60
+SECURE_CONTENT_TYPE_NOSNIFF=True
+SECURE_BROWSER_XSS_FILTER=True
+SECURE_SSL_REDIRECT=True
+SESSION_COOKIE_SECURE=True
+CSRF_COOKIE_SECURE =Ture
+X_FRAME_OPTIONS=DENY
+"""
+
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#demployment mod
+#DEBUG = Flase
 
 ALLOWED_HOSTS = []
 
