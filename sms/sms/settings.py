@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'login',
     'bio_lab',
     'reg',
+    'home',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -132,7 +133,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
+STATIC_URL ='/static/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
