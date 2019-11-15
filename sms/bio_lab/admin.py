@@ -3,4 +3,4 @@ from .models import chem
 # Register your models here.
 
 
-admin.site.Register(chem)
+admin.site.register(chem)
