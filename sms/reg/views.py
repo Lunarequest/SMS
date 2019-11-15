@@ -25,7 +25,7 @@ def reg(request):
                 message = render_to_string('acc_active_email.html', {
                     'user': user,
                     'domain': current_site.domain,
-                    'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                    'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
                     'token':account_activation_token.make_token(user),
                 })
                 to_email = form.cleaned_data.get('email')
@@ -40,7 +40,7 @@ def reg(request):
                 return redirect("registration")
         else:
             form = SignupForm()
-            return render(request, 'signup.html', {'form': form})
+            return render(request, 'reg/reg.html', {'form': form})
     else:
         return redirect("")
 
@@ -54,9 +54,9 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        #messages.info(request,"account created please login")
-        # return redirect('home')
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        messages.info(request,"account created. you are now logedin")
+        return redirect('home')
+        #return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         messages.info(request,'link is not valid!')
         return redirect("")
