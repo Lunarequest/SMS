@@ -16,7 +16,7 @@ def login(request):
             messages.info(request,'invaild login')
             return redirect("/login")
     else:
-        return render(request,'login.html')
+        return render(request,'login_new.html')
 
 def logout(request):
     auth.logout(request)

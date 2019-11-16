@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'login',
     'bio_lab',
     'reg',
-    'home',
+    'select_page',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
