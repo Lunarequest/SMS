@@ -24,4 +24,5 @@ urlpatterns = [
     path('bio', include('bio_lab.urls')),
     path('registration',include('reg.urls')),
     path('sel', include('sel.urls')),
+     path('accounts/', include('django.contrib.auth.urls')),
 ]
