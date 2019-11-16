@@ -11,7 +11,7 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request,user)
-            return render(request, 'management.html')
+            return redirect("/sel")
         else:
             messages.info(request,'invaild login')
             return redirect("/login")

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
 # Create your views here.
-def auth(repuest):
-    response = render(repuest,'select_page/page.html')
+def page(request):
+    response = render(request,'sel/c.html')
     return response
