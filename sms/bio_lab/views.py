@@ -7,7 +7,6 @@ def console(request):
     if(request.user.has_perm('bio.can_view_chem')):
         istekler = chem.objects.all()
         return render(request,'console.html',locals())
-        
 def edit(request):       
     if(request.user.has_perm('bio.can_change_chem') and request.user.has_perm('bio.can_add_chem') and request.user.has_perm('bio.can_delete_chem')):
         if (request.method == 'POST'):
