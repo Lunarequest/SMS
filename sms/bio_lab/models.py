@@ -5,3 +5,7 @@ class chem(models.Model):
     serialnum = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=10000)
     amount = models.IntegerField(max_length=None)
+    class meta:
+           permissions = (
+      ("can_view_chem", "Can view chem"),
+    )
