@@ -45,6 +45,8 @@ ALLOWED_HOSTS = ['127.0.0.1',]
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+#MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Application definition
 

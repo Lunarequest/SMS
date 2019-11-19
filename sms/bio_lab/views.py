@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
 from .models import chem
 
 # Create your views here.
@@ -9,7 +10,9 @@ def console(request):
     if request.user.groups.filter(name__in=['bio_member']):
         istekler = chem.objects.all()
         return render(request,'console.html',locals())
-
+    else:
+        messages.info(request,'invalid access')
+        return redirect("sel")
 
 def edit(request):       
     if request.user.qroups.filter(name_in=['bio_member']):
