@@ -53,6 +53,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 INSTALLED_APPS = [
     'login',
     'bio_lab',
+    'chem_lab',
+    'physics',
     'reg',
     'sel',
     'crispy_forms',

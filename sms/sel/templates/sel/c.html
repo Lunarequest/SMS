@@ -16,6 +16,10 @@
      <a href="library" class="w3-button w3-white">library</a></br>
      <a href="password_change" class="w3-button w3-white">change password</a></br>
   </div>
+
+{% for message in messages %}
+   <font color ='red'><h3> {{message}} </h3></font>
+{% endfor %}
 </div>
 </body>
 </html>

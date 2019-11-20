@@ -23,6 +23,7 @@ urlpatterns = [
     path('logout',include('login.urls')),
     path('', include('login.urls')),
     path('bio', include('bio_lab.urls')),
+    path('chem', include('chem_lab.urls')),
     path('registration',include('reg.urls')),
     path('sel', include('sel.urls')),
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_done.html'), 
