@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'physics',
     'reg',
     'sel',
+    'django_jenkins',
     'crispy_forms',
     'django_tables2',
     'django.contrib.admin',
@@ -76,6 +77,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+JENKINS_TASKS = (
+    'django_jenkins.tasks.run_pep8',
+    'django_jenkins.tasks.run_pyflakes',
+    'django_jenkins.tasks.run_jslint',
+    'django_jenkins.tasks.run_csslint',
+    'django_jenkins.tasks.run_sloccount'
+)
 
 ROOT_URLCONF = 'sms.urls'
 
