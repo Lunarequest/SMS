@@ -23,6 +23,7 @@ urlpatterns = [
     path('logout',include('login.urls')),
     path('', include('login.urls')),
     path('bio', include('bio_lab.urls')),
+     path('bio/edit', include('bio_lab.urls')),
     path('chem', include('chem_lab.urls')),
     path('registration',include('reg.urls')),
     path('sel', include('sel.urls')),
