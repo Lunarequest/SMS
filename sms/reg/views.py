@@ -32,7 +32,7 @@ def reg(request):
                 email = EmailMessage(
                             mail_subject, message, to=[to_email]
                 )
-                email.send()
+                email.send(email)
                 messages.info(request,'account created you must now activate your account')
                 return redirect("registration")
             else:
