@@ -5,16 +5,16 @@
       {% for field in form %}
       <p>
         {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="display: none">{{ field.help_text }}</small>
-        {% endif %}
+        {{ field }}</br>
+        {{field.help_text}}
         {% for error in field.errors %}
           <p style="color: red">{{ error }}</p>
         {% endfor %}
       </p>
       {% endfor %}
-    <button type="submit">Sign up</button>
+    <button type="submit">create user</button>
   </form>
 {% endblock %}
-<h3>{{messages</h3>
+{% for message in messages%}
+<h3>{{message}}</h3>
+{% endfor %}
