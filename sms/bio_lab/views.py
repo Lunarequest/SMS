@@ -10,7 +10,7 @@ def console(request):
     if request.user.groups.filter(name__in=['bio_member']):
         istekler = chem.objects.all()
         loc = 'biology lab'
-        return render(request,'console.html',locals())
+        return render(request,'bio_lab/console.html',locals())
     else:
         messages.info(request, "error 401 access denied")
         return redirect("/sel")
@@ -21,3 +21,5 @@ def edit(request):
              entries = chem.objects.all()
             #MyModel.objects.filter(pk=some_value).update(field1='some value')
              return HttpResponse("loads")
+        else:
+            return render(request,"bio_lab/edit.html")

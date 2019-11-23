@@ -1,0 +1,35 @@
+login/views.py:2: [E] PYFLAKES:'django.http.HttpResponse' imported but unused
+login/views.py:4: [E] PYFLAKES:'django.contrib.auth.models.User' imported but unused
+login/models.py:1: [E] PYFLAKES:'django.db.models' imported but unused
+login/tests.py:1: [E] PYFLAKES:'django.test.TestCase' imported but unused
+login/admin.py:1: [E] PYFLAKES:'django.contrib.admin' imported but unused
+bio_lab/views.py:21: [E] PYFLAKES:local variable 'entries' is assigned to but never used
+bio_lab/tests.py:1: [E] PYFLAKES:'django.test.TestCase' imported but unused
+chem_lab/views.py:21: [E] PYFLAKES:local variable 'entries' is assigned to but never used
+chem_lab/tests.py:1: [E] PYFLAKES:'django.test.TestCase' imported but unused
+chem_lab/admin.py:1: [E] PYFLAKES:'django.contrib.admin' imported but unused
+physics/views.py:1: [E] PYFLAKES:'django.shortcuts.render' imported but unused
+physics/models.py:1: [E] PYFLAKES:'django.db.models' imported but unused
+physics/tests.py:1: [E] PYFLAKES:'django.test.TestCase' imported but unused
+physics/admin.py:1: [E] PYFLAKES:'django.contrib.admin' imported but unused
+reg/views.py:4: [E] PYFLAKES:'django.http.HttpResponse' imported but unused
+reg/views.py:5: [E] PYFLAKES:redefinition of unused 'render' from line 1
+reg/views.py:6: [E] PYFLAKES:'django.contrib.auth.authenticate' imported but unused
+reg/models.py:1: [E] PYFLAKES:'django.db.models' imported but unused
+reg/tests.py:1: [E] PYFLAKES:'django.test.TestCase' imported but unused
+reg/admin.py:1: [E] PYFLAKES:'django.contrib.admin' imported but unused
+sel/models.py:1: [E] PYFLAKES:'django.db.models' imported but unused
+sel/tests.py:1: [E] PYFLAKES:'django.test.TestCase' imported but unused
+sel/admin.py:1: [E] PYFLAKES:'django.contrib.admin' imported but unused
+../../../../../../.local/lib/python3.7/site-packages/crispy_forms/compatibility.py:4: [E] PYFLAKES:undefined name 'basestring'
+../../../../../../.local/lib/python3.7/site-packages/crispy_forms/compatibility.py:15: [E] PYFLAKES:undefined name 'unicode'
+../../../../../../.local/lib/python3.7/site-packages/crispy_forms/compatibility.py:18: [E] PYFLAKES:undefined name 'long'
+../../../../../../.local/lib/python3.7/site-packages/crispy_forms/templatetags/crispy_forms_field.py:146: [E] PYFLAKES:use ==/!= to compare str, bytes, and int literals
+../../../../../../.local/lib/python3.7/site-packages/crispy_forms/templatetags/crispy_forms_tags.py:15: [E] PYFLAKES:'from crispy_forms.templatetags.crispy_forms_filters import *' used; unable to detect undefined names
+../../../../../../.local/lib/python3.7/site-packages/crispy_forms/templatetags/crispy_forms_tags.py:15: [E] PYFLAKES:'crispy_forms.templatetags.crispy_forms_filters.*' imported but unused
+../../../../../../.local/lib/python3.7/site-packages/crispy_forms/tests/test_form_helper.py:585: [E] PYFLAKES:redefinition of unused 'test_bootstrap_form_show_errors' from line 557
+../../../../../../.local/lib/python3.7/site-packages/crispy_forms/tests/test_form_helper.py:689: [E] PYFLAKES:redefinition of unused 'test_error_and_help_inline' from line 659
+../../../../../../.local/lib/python3.7/site-packages/django/contrib/messages/__init__.py:1: [E] PYFLAKES:'from django.contrib.messages.api import *' used; unable to detect undefined names
+../../../../../../.local/lib/python3.7/site-packages/django/contrib/messages/__init__.py:1: [E] PYFLAKES:'django.contrib.messages.api.*' imported but unused
+../../../../../../.local/lib/python3.7/site-packages/django/contrib/messages/__init__.py:2: [E] PYFLAKES:'from django.contrib.messages.constants import *' used; unable to detect undefined names
+../../../../../../.local/lib/python3.7/site-packages/django/contrib/messages/__init__.py:2: [E] PYFLAKES:'django.contrib.messages.constants.*' imported but unused
