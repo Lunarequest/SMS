@@ -1,14 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
-from .models import chem
-
+from .models import bio_eq
 # Create your views here.
 
 
 def console(request):
     if request.user.groups.filter(name__in=['bio_member']):
-        istekler = chem.objects.all()
+        istekler = bio_eq.objects.all()
         loc = 'biology lab'
         return render(request,'bio_lab/console.html',locals())
     else:
@@ -18,7 +17,7 @@ def console(request):
 def edit(request):       
     if request.user.qroups.filter(name_in=['bio_member']):
         if (request.method == 'POST'):
-             entries = chem.objects.all()
+             entries = bio_eq.objects.all()
             #MyModel.objects.filter(pk=some_value).update(field1='some value')
              return HttpResponse("loads")
         else:
