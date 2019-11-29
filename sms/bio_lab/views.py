@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
-from .models import bio_eq
+from .models import bio_eq, bio_broken_eq
 # Create your views here.
 
 
@@ -19,10 +19,13 @@ def edit(request, bio_eq_id= None):
         item = get_object_or_404(bio_eq,pk=bio_eq_id)
         if(request.method == "POST"):
              broken=request.POST['broken']
+             student_id=request.POST['student_id']
              if (broken == "broken"):
                  item = bio_eq.objects.filter(pk=bio_eq_id)
                  amount=item.amount
+                 name = item.bio_eq_name
                  bio_eq.objects.filter(pk=bio_eq_id).update(amount=amount-1)
+                 bio_broken_eq.object.create(bio_eq_id=bio_eq_id,student=student_id,bio_eq_name=name)
 
              return redirect("/bio")
         else:

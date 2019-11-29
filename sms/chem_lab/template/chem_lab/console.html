@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% block content %}
+<body>
+  <div class="topnav">
+    <a href="bio/edit">Edit</a>
+      <a href="/logout">Logout</a>
+  </div>
+
+  <div class="content">
+    <h2>Stock Database</h2>
+      <h3>{{loc}}</h3>
+      {% render_table items %}
+  </div>
+
+
+
+</body>
+
+
+</html>
+{% endblock content %}
