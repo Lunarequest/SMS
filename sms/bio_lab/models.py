@@ -15,8 +15,8 @@ class bio_eq(models.Model):
   bio_eq_amount = models.PositiveIntegerField()
 
 class ContactTable(tables.Table):
-    edit_entries = tables.LinkColumn('<a href="/equipment/{{record.id}}">Edit</a>')
+    #edit_entries = tables.LinkColumn('<a href="/equipment/{{record.id}}">Edit</a>')
 
     class Meta:
-        model = Contact
+        model = bio_eq
         attrs = {"class": "paleblue"}
