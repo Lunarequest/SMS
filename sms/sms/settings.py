@@ -40,14 +40,14 @@ X_FRAME_OPTIONS=DENY
 DEBUG = True
 #demployment mod
 #DEBUG = Flase
-DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap4.html'
 ALLOWED_HOSTS = ['127.0.0.1',]
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
 # Application definition
 
 INSTALLED_APPS = [

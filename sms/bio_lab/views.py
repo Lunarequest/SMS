@@ -15,10 +15,7 @@ def console(request):
         return redirect("/sel")
 
 def edit(request):       
-    if request.user.qroups.filter(name_in=['bio_member']):
-        if (request.method == 'POST'):
-             entries = bio_eq.objects.all()
-            #MyModel.objects.filter(pk=some_value).update(field1='some value')
-             return HttpResponse("loads")
-        else:
-            return render(request,"bio_lab/edit.html")
+    if request.user.groups.filter(name__in=['bio_member']):
+        table = bio_eq.objects.all()
+        loc = 'biology lab'
+        return render(request,"bio_lab/edit.html",locals())
