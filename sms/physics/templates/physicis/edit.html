@@ -4,7 +4,7 @@
 <body>
 
 <div class="topnav">
-  <a href="/bio/save">Done</a>
+  <a href="/physics/save">Done</a>
     <a href="/logout">Logout</a>
 </div>
 
@@ -17,16 +17,24 @@
       <th>id</th>
       <th>name</th>
       <th>amount</th>
+      <th>edit</th>
+      <th>broken</th>
+      <th>delete</th>
     </tr>
   </thead>
   <tbody>
     {% for item in items %}
       <tr>
-        <td>{{item.bio_eq_id}}</td>
-        <td>{{item.bio_eq_name}}</td>
-        <td>{{item.bio_eq_amount}}</td>
+        <td>{{item.phy_eq_id}}</td>
+        <td>{{item.phy_eq_name}}</td>
+        <td>{{item.phy_eq_amount}}</td>
         <td>
-          <a href={% url 'physicis:edit_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
+        <a href={% url 'physics:edit_with_pk' item.phy_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
+        <td>
+          <a href={% url 'physics:broken_with_pk' item.phy_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">broken by student</a>
+        </td>
+        <td>
+        <a href={% url 'physics:delete_with_pk' item.phy_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">delete</a>
         </td>
       </tr>
     {% endfor %}

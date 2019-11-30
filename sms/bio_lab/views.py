@@ -15,10 +15,28 @@ def console(request):
     else:
         messages.info(request, "error 401 access denied")
         return redirect("/sel")
-
+def edit(request, bio_eq_id = None):
+    #item = get_object_or_404(bio_eq,pk=bio_eq_id)
+    if request.user.groups.filter(name__in=['bio_member']):
+        if(request.method == "POST"):
+            amount = int(request.POST['amount'])
+            costs = int(request.POST['costs'])
+            print(costs)
+            if(amount > 0):
+                bio_eq.objects.filter(bio_eq_id=bio_eq_id).update(bio_eq_amount=amount)
+            if(costs > 0):
+                bio_eq.objects.filter(bio_eq_id=bio_eq_id).update(bio_eq_cost=costs)
+            
+            return redirect("/bio")
+        else:
+            cursor = connection.cursor()
+            cursor.execute('''SELECT bio_eq_name from bio_lab_bio_eq where bio_eq_id=bio_eq_id''')
+            row = cursor.fetchone()
+            name = str(row[0])
+            return render(request,'bio_lab/edit_item.html', locals())
+#this was all me
 def broken(request, bio_eq_id= None):       
     if request.user.groups.filter(name__in=['bio_member']):
-        item = get_object_or_404(bio_eq,pk=bio_eq_id)
         if(request.method == "POST"):
              broken=request.POST['broken']
              if (broken == "broken"):
@@ -39,8 +57,11 @@ def broken(request, bio_eq_id= None):
 
              return redirect("/bio")
         else:
-            
-            return render(request,'bio_lab/edit_item.html')
+            cursor = connection.cursor()
+            cursor.execute('''SELECT bio_eq_name from bio_lab_bio_eq where bio_eq_id=bio_eq_id''')
+            row = cursor.fetchone()
+            name = str(row[0])
+            return render(request,'bio_lab/delete.html', locals())
        
        
 def display(request):

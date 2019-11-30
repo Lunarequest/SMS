@@ -2,39 +2,80 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 from .models import phy_eq, phy_broken_eq
+from django.db import connection
 # Create your views here.
 
 
 def console(request):
     if request.user.groups.filter(name__in=['phy_member']):
-        items = bio_eq.objects.all()
-        loc = 'physicis lab'
-        return render(request,'bio_lab/edit.html',locals())
+        items =phy_eq.objects.all()
+        loc = 'physics lab'
+        return render(request,'physicis/console.html',locals())
     else:
         messages.info(request, "error 401 access denied")
         return redirect("/sel")
 
-def edit(request, bio_eq_id= None):       
+def edit(request, phy_eq_id = None):
+    #item = get_object_or_404(bio_eq,pk=bio_eq_id)
     if request.user.groups.filter(name__in=['phy_member']):
-        item = get_object_or_404(phy_eq,pk=bio_eq_id)
+        if(request.method == "POST"):
+            amount = int(request.POST['amount'])
+            costs = int(request.POST['costs'])
+            print(costs)
+            if(amount > 0):
+                phy_eq.objects.filter(phy_eq_id=phy_eq_id).update(phy_ep_amount=amount)
+            if(costs > 0):
+                phy_eq.objects.filter(phy_eq_id=phy_eq_id).update(phy_eq_cost=costs)
+            
+            return redirect("/physics")
+        else:
+            cursor = connection.cursor()
+            cursor.execute('''SELECT phy_eq_name from physics_phy_eq where phy_eq_id=phy_eq_id''')
+            row = cursor.fetchone()
+            name = str(row[0])
+            return render(request,'physicis/edit_item.html', locals())
+#this was all me
+def broken(request, bio_eq_id= None):       
+    if request.user.groups.filter(name__in=['phy_member']):
         if(request.method == "POST"):
              broken=request.POST['broken']
-             student_id=request.POST['student_id']
              if (broken == "broken"):
-                 item = phy_eq.objects.filter(pk=bio_eq_id)
-                 amount=item.amount
-                 name = item.bio_eq_name
-                 phy_eq.objects.filter(pk=bio_eq_id).update(amount=amount-1)
-                 phy_broken_eq.object.create(bio_eq_id=bio_eq_id,student=student_id,bio_eq_name=name)
+                 cursor = connection.cursor()
+                 cursor.execute('''SELECT phy_eq_amount from physics_phy_eq where phy_eq_id=phy_eq_id''')
+                 #data = bio_eq.objects.raw('SELECT bio_eq_amount from bio_lab_bio_eq where bio_eq_id=bio_eq_id')
+                 row = cursor.fetchone()
+                 amount = int(row[0])
+                 amount = amount -1
+                 cursor.execute('''SELECT phy_eq_name from physics_phy_eq where phy_eq_id=phy_eq_id''')
+                 row = cursor.fetchone()
+                 name = str(row[0])
+                 student_id=request.POST['student_id']
+                 p = phy_broken_eq(bio_eq_id = bio_eq_id,student_id = student_id, bio_eq_name = name)
+                 p.save()
+                 phy_eq.objects.filter(pk=bio_eq_id).update(bio_eq_amount=amount)
+                 #bio_broken_eq.object.create(bio_eq_id=bio_eq_id,student=student_id,bio_eq_name=name)
 
-             return redirect("/physics")
+             return redirect("/bio")
         else:
-            return render(request,'bio_lab/edit_item.html')
+            cursor = connection.cursor()
+            cursor.execute('''SELECT bio_eq_name from bio_lab_bio_eq where bio_eq_id=bio_eq_id''')
+            row = cursor.fetchone()
+            name = str(row[0])
+            return render(request,'physicis/delete.html', locals())
        
        
-       
+def display(request):
+    items = phy_eq.objects.all()
+    context ={
+        'items':items
+    }
+    return render(request,'physicis/edit.html',context)
     
 
 
 def save(request):
-    return redirect("/bio")
+    return redirect("/physics")
+
+def delete(request, bio_eq_id):
+    phy_eq.objects.filter(pk=bio_eq_id).delete()
+    return redirect("/physics")

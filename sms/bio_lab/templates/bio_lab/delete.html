@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>this is for{{name}}</h3>
+<div class="container">
+    <div align="center">
+        <form method = "POST">
+        {% csrf_token %}
+            <select name="broken">
+                <option name='broken' placeholder='broken'>broken</option>
+            </select></br>
+            <input type="text" name="student_id" placeholder="student id">
+            <input type="submit" value="Submit">
+        </form>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

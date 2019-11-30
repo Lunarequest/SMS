@@ -17,6 +17,7 @@
       <th>id</th>
       <th>name</th>
       <th>amount</th>
+      <th>edit</th>
       <th>broken</th>
       <th>delete</th>
     </tr>
@@ -27,6 +28,8 @@
         <td>{{item.bio_eq_id}}</td>
         <td>{{item.bio_eq_name}}</td>
         <td>{{item.bio_eq_amount}}</td>
+        <td>
+        <a href={% url 'bio_lab:edit_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
         <td>
           <a href={% url 'bio_lab:broken_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">broken by student</a>
         </td>

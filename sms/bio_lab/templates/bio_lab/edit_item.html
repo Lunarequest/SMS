@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
+<h3>you are editing {{name}}</h3>
 <div class="container">
     <div align="center">
         <form method = "POST">
         {% csrf_token %}
-            <select name="broken">
-                <option value='broken'>broken</option>
-            </select></br>
-            <input type="text" name="student_id" placeholder="student id">
-            <input type="submit" value="Submit">
+            <input type="text" name="amount" placeholder = "amount" value=0></br>
+            <input type"text" name="costs" placeholder = "costs" value=0></br>
+            <input type="submit" name="Submit">
         </form>
         </div>
 
