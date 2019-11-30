@@ -1,6 +1,5 @@
 from django.shortcuts import render
 # Create your views here.
-from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
@@ -12,35 +11,31 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
-def reg(request):
-    if(request.user.is_superuser):
-        if request.method == 'POST':
-            form = SignupForm(request.POST)
-            if form.is_valid():
-                user = form.save(commit=False)
-                user.is_active = False
-                user.save()
-                current_site = get_current_site(request)
-                mail_subject = 'Activate your stockdb account.'
-                message = render_to_string('acc_active_email.html', {
-                    'user': user,
-                    'domain': current_site.domain,
-                    'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-                    'token':account_activation_token.make_token(user),
-                })
-                to_email = form.cleaned_data.get('email')
-                email = EmailMessage(
-                            mail_subject, message, to=[to_email]
-                )
-                email.send(email)
-                messages.info(request,'account created you must now activate your account')
-                return redirect("registration")
-            else:
-                messages.info(request,"you must enter some values")
-                return redirect("registration")
-        else:
-            form = SignupForm()
-            return render(request, 'reg/reg.html', {'form': form})
+def signup(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your stock management account.'
+            message = render_to_string('reg/acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':account_activation_token.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(
+                        mail_subject, message, to=[to_email]
+            )
+            email.send()
+            return HttpResponse('Please confirm your email address to complete the registration')
+    else:
+        form = SignupForm()
+    return render(request, 'reg/signup.html', {'form': form})
+
 
 def activate(request, uidb64, token):
     try:
@@ -52,9 +47,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        messages.info(request,"account created. you are now logedin")
-        return redirect('home')
-        #return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        # return redirect('home')
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
-        messages.info(request,'link is not valid!')
-        return redirect("")
+        return HttpResponse('Activation link is invalid!')
