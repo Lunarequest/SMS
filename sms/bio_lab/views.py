@@ -79,3 +79,12 @@ def save(request):
 def delete(request, bio_eq_id):
     bio_eq.objects.filter(pk=bio_eq_id).delete()
     return redirect("/bio")
+
+
+def add(request):
+    if request.user.groups.filter(name__in=['bio_member']):
+        if(request.method=="POST"):
+            pass
+        else:
+            loc = 'biology lab'
+            return render(request,'bio_lab/add.html')
