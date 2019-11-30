@@ -67,10 +67,25 @@ def add_con(request):
             amount = request.POST['q']
             exp_date = request.POST['exp_date']
             if(chem_con.objects.filter(consumable_id=con_id).exists()):
-                messages.info('consumable_id is not uniqe!')
+                messages.info(request,'consumable id is not uniqe!')
                 return redirect("/chem/add_con")
             else:
                 q=chem_con(consumable_id=con_id, chem_names=name,  chem_amount=amount, exp_date=exp_date)
                 q.save()
         else:
             return render(request,'chem_lab/add_con.html')
+def add_eq(request):
+      if request.user.groups.filter(name__in=['chem_member']):
+        if(request.method=="POST"):
+            con_id = request.POST['id']
+            name = request.POST['eq_name']
+            amount = request.POST['q']
+            cost = request.POST['costs']
+            if(chem_eq.objects.filter(chem_eq_id=con_id).exists()):
+                messages.info(request,'equipment id is not uniqe!')
+                return redirect("/chem/add_eq")
+            else:
+                q=chem_eq(chem_eq_id=con_id, chem_eq_names=name,  chem_eq_amount=amount, chem_eq_cost=cost)
+                q.save()
+        else:
+            return render(request,'chem_lab/add_eq.html')
