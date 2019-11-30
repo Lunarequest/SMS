@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.contrib import messages
 from .models import bio_eq, bio_broken_eq
 # Create your views here.
-
+def ValuesQuerySetToDict(vqs):
+    return [item for item in vqs]
 
 def console(request):
     if request.user.groups.filter(name__in=['bio_member']):
@@ -20,13 +21,12 @@ def broken(request, bio_eq_id= None):
         if(request.method == "POST"):
              broken=request.POST['broken']
              if (broken == "broken"):
-                 item = bio_eq.objects.filter(pk=bio_eq_id)
+                 data = bio_eq.objects.raw('SELECT bio_eq_amount from bio_lab_bio_eq where bio_eq_id=bio_eq_id')
+                 amount = ValuesQuerySetToDict(data)
+                 name = bio_eq.objects.raw('SELECT bio_eq_name from bio_lab_bio_eq where bio_eq_id=bio_eq_id')
                  student_id=request.POST['student_id']
-                 amount=item.bio_eq_amount
-                 name = item.bio_eq_name
-                 bio_eq.objects.filter(pk=bio_eq_id).update(bio_eq_amount=amount-1)
+                 bio_eq.objects.filter(pk=bio_eq_id).update(bio_eq_amount=amount)
                  bio_broken_eq.object.create(bio_eq_id=bio_eq_id,student=student_id,bio_eq_name=name)
-
 
              return redirect("/bio")
         else:
