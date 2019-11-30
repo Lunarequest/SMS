@@ -4,6 +4,6 @@ app_name='chem_lab'
 urlpatterns = [
     path('', views.console, name='chem_lab'),
     path("edit_con/<int:consumable_id>", views.edit_con, name="editcon"),
-    path('edit/<int:chem_id>', views.broken, name='edit_with_pk'),
+    path('broken/<int:chem_id>', views.broken, name='broken_with_pk'),
     
 ]

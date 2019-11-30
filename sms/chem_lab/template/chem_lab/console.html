@@ -4,14 +4,16 @@
 {% block content %}
 <body>
   <div class="topnav">
-    <a href="bio/edit">Edit</a>
-      <a href="/logout">Logout</a>
+    <a href="chem/add_con">Edit equipment</a>
+      <a href="chem/add_eq">add equipment</a>
+        <a href="/logout">Logout</a>
   </div>
 
   <div class="content">
     <h2>Stock Database</h2>
       <h3>{{loc}}</h3>
       {% render_table items %}
+      {% render_table items2 %}
   </div>
 
 

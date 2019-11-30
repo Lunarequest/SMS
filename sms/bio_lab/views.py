@@ -50,7 +50,7 @@ def broken(request, bio_eq_id= None):
                  row = cursor.fetchone()
                  name = str(row[0])
                  student_id=request.POST['student_id']
-                 p = bio_broken_eq(bio_eq_id = bio_eq_id,student_id = student_id, bio_eq_name = name)
+                 p = bio_broken_eq(bio_eq_id = bio_eq_id, student_id = student_id, bio_eq_name = name)
                  p.save()
                  bio_eq.objects.filter(pk=bio_eq_id).update(bio_eq_amount=amount)
                  #bio_broken_eq.object.create(bio_eq_id=bio_eq_id,student=student_id,bio_eq_name=name)
