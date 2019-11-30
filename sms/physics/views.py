@@ -79,3 +79,23 @@ def save(request):
 def delete(request, bio_eq_id):
     phy_eq.objects.filter(pk=bio_eq_id).delete()
     return redirect("/physics")
+
+def add(request):
+    if request.user.groups.filter(name__in=['phy_member']):
+        if(request.method=="POST"):
+            phy_eq_id = request.POST['id']
+            phy_eq_name = request.POST['name']
+            phy_eq_amount = request.POST['amount']
+            if phy_eq.objects.filter(phy_eq_id=phy_eq_id).exists():
+                messages=messages.info(request,"equipment id exits(each id must be unique)")
+                return redirect("/phy/add")
+            elif(phy_eq_amount<=0):
+                messages.info(request,"enter a vaild ammount")
+                return redirect("/phy/add")
+            else:
+                p = phy_eq(phy_eq_id=phy_eq_id,phy_eq_name=phy_eq_name, phy_eq_amount=phy_eq_amount)
+                p.save()
+                return redirect("/phy")
+        else:
+            loc = 'physics lab'
+            return render(request,'physicis/add.html', locals())
