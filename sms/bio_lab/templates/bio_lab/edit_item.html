@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-    <form method = "POST">
-    {% csrf_token %}
-        <select name=broken>
-            <option value='broken'></option>
-            <option value='not broken'></option>
-        <input type="submit" value="Submit">
-    </form>
+    <div align="center">
+        <form method = "POST">
+        {% csrf_token %}
+            <select name="broken">
+                <option value='broken'>broken</option>
+            </select></br>
+            <input type="text" name="student_id" placeholder="student id">
+            <input type="submit" value="Submit">
+        </form>
+        </div>
+
     </div>
-
-  </form>
-
 </div>
 {% endblock content %}
