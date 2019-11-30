@@ -3,8 +3,8 @@
 <div class="container">
     <form method = "POST">
     {% csrf_token %}
-       <input type='number' name = 'amount' placeholder="amount"></br>
-       <input type="text" name='cost' placeholder="cost"></br>
+       <input type='number' name = 'amount' placeholder="amount" value='0'></br>
+       <input type="number" name='cost' placeholder="cost" value='0'></br>
        <input type='submit' name ='submit'>
     </form>
     </div>

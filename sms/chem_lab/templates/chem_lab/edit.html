@@ -30,7 +30,7 @@
         <td>{{item.chem_amount}}</td>
         <td>{{item.exp_date}}</td>
         <td>
-          <a href={% url 'chem_lab:edit_con_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
+          <a href={% url 'chem_lab:editcon' item.consumable_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
         </td>
       </tr>
     {% endfor %}
@@ -44,6 +44,8 @@
   <th>id</th>
   <th>name</th>
   <th>amount</th>
+  <th>edit</th>
+  <th>broken by student</th>
 </tr>
 </thead>
 <tbody>
@@ -54,7 +56,10 @@
         <td>{{item.chem_eq_amount}}</td>
         <td>{{item.exp_date}}</td>
         <td>
-          <a href={% url 'chem_lab:edit_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
+          <a href={% url 'chem_lab:edit_eq' item.chem_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
+        </td>
+        <td>
+        <a href={% url 'chem_lab:broken_with_pk' item.chem_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">broken</a>
         </td>
       </tr>
     {% endfor %}

@@ -21,18 +21,18 @@ def edit(request):
         loc = 'chemistry lab'
         items2=chem_eq.objects.all()
         return render(request,'chem_lab/edit.html',locals())
-def edit_con(request,bio_eq_id):       
+def edit_con(request, consumable_id):       
      if request.user.groups.filter(name__in=['chem_member']):
         if(request.method == "POST"):
              amount=request.POST['amount']
              date=request.POST['exp_date']
-             chem_con.objects.filter(consumable_id=bio_eq_id).update(chem_amount=amount)
-             chem_con.objects.filter(consumable_id=bio_eq_id).update(exp_date=date)
+             chem_con.objects.filter(consumable_id=consumable_id).update(chem_amount=amount)
+             chem_con.objects.filter(consumable_id=consumable_id).update(exp_date=date)
              return redirect("/physics")
         else:
             return render(request,'chem/edit_con_item.html')
        
-def broken(request, bio_eq_id):
+def broken(request, chem_eq_id):
      if request.user.groups.filter(name__in=['chem_member']):
         if(request.method == "POST"):
              broken=request.POST['broken']
@@ -56,7 +56,13 @@ def broken(request, bio_eq_id):
 def edit_eq(request, chem_eq_id):
     if request.user.groups.filter(name__in=['chem_member']):
         if(request.method=="POST"):
-            pass
+            amount=request.POST['amount']
+            cost=request.POST['cost']
+            if(amount>0):
+                chem_eq.objects.filter(chem_eq_id=chem_eq_id).update(chem_eq_amount=amount)
+            if(cost>0):
+                chem_eq.objects.filter(chem_eq_id=chem_eq_id).update(chem_eq_cost=cost)
+            return redirect("/chem")
         else:
             return render(request,'chem_lab/edit_eq.html')
 def add_con(request):
