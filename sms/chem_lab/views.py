@@ -15,7 +15,12 @@ def console(request):
     else:
         messages.info(request, "error 401 access denied")
         return redirect("/sel")
-
+def edit(request):
+    if request.user.groups.filter(name__in=['chem_member']):
+        items = chem_con.objects.all()
+        loc = 'chemistry lab'
+        items2=chem_eq.objects.all()
+        return render(request,'chem_lab/edit.html',locals())
 def edit_con(request,bio_eq_id):       
      if request.user.groups.filter(name__in=['chem_member']):
         if(request.method == "POST"):
@@ -48,4 +53,24 @@ def broken(request, bio_eq_id):
         else:
             return render(request,'chem_lab/broken_item.html')
        
-
+def edit_eq(request, chem_eq_id):
+    if request.user.groups.filter(name__in=['chem_member']):
+        if(request.method=="POST"):
+            pass
+        else:
+            return render(request,'chem_lab/edit_eq.html')
+def add_con(request):
+    if request.user.groups.filter(name__in=['chem_member']):
+        if(request.method=="POST"):
+            con_id = request.POST['id']
+            name = request.POST['chem_name']
+            amount = request.POST['q']
+            exp_date = request.POST['exp_date']
+            if(chem_con.objects.filter(consumable_id=con_id).exists()):
+                messages.info('consumable_id is not uniqe!')
+                return redirect("/chem/add_con")
+            else:
+                q=chem_con(consumable_id=con_id, chem_names=name,  chem_amount=amount, exp_date=exp_date)
+                q.save()
+        else:
+            return render(request,'chem_lab/add_con.html')
