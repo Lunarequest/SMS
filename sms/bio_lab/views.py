@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 from .models import bio_eq, bio_broken_eq
+from django.db import connection
 # Create your views here.
 def ValuesQuerySetToDict(vqs):
     return [item for item in vqs]
@@ -21,10 +22,18 @@ def broken(request, bio_eq_id= None):
         if(request.method == "POST"):
              broken=request.POST['broken']
              if (broken == "broken"):
-                 data = bio_eq.objects.raw('SELECT bio_eq_amount from bio_lab_bio_eq where bio_eq_id=bio_eq_id')
-                 amount = ValuesQuerySetToDict(data)
-                 name = bio_eq.objects.raw('SELECT bio_eq_name from bio_lab_bio_eq where bio_eq_id=bio_eq_id')
+                 cursor = connection.cursor()
+                 cursor.execute('''SELECT bio_eq_amount from bio_lab_bio_eq where bio_eq_id=bio_eq_id''')
+                 #data = bio_eq.objects.raw('SELECT bio_eq_amount from bio_lab_bio_eq where bio_eq_id=bio_eq_id')
+                 row = cursor.fetchone()
+                 amount = int(row[0])
+                 amount = amount -1
+                 cursor.execute('''SELECT bio_eq_name from bio_lab_bio_eq where bio_eq_id=bio_eq_id''')
+                 row = cursor.fetchone()
+                 name = str(row[0])
                  student_id=request.POST['student_id']
+                 p = bio_broken_eq(bio_eq_id = bio_eq_id,student_id = student_id, bio_eq_name = name)
+                 p.save()
                  bio_eq.objects.filter(pk=bio_eq_id).update(bio_eq_amount=amount)
                  bio_broken_eq.object.create(bio_eq_id=bio_eq_id,student=student_id,bio_eq_name=name)
 
