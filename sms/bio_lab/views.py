@@ -34,7 +34,6 @@ def edit(request, bio_eq_id = None):
             row = cursor.fetchone()
             name = str(row[0])
             return render(request,'bio_lab/edit_item.html', locals())
-#this was all me
 def broken(request, bio_eq_id= None):       
     if request.user.groups.filter(name__in=['bio_member']):
         if(request.method == "POST"):

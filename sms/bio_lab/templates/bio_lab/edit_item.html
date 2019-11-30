@@ -5,8 +5,8 @@
     <div align="center">
         <form method = "POST">
         {% csrf_token %}
-            <input type="text" name="amount" placeholder = "amount" value=0></br>
-            <input type"text" name="costs" placeholder = "costs" value=0></br>
+            <input type="number" name="amount" placeholder = "amount" value=0></br>
+            <input type"number" name="costs" placeholder = "costs" value=0></br>
             <input type="submit" name="Submit">
         </form>
         </div>
