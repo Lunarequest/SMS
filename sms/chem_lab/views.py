@@ -57,7 +57,7 @@ def edit_eq(request, chem_eq_id):
     if request.user.groups.filter(name__in=['chem_member']):
         if(request.method=="POST"):
             amount=request.POST['amount']
-            cost=request.POST['cost']
+            cost=request.POST['costs']
             if(amount>0):
                 chem_eq.objects.filter(chem_eq_id=chem_eq_id).update(chem_eq_amount=amount)
             if(cost>0):

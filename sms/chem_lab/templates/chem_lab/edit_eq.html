@@ -3,8 +3,8 @@
 <div class="container">
     <form method = "POST">
     {% csrf_token %}
-       <input type='number' name = 'amount' placeholder="amount" value='0'></br>
-       <input type="number" name='cost' placeholder="cost" value='0'></br>
+       <input type='number' name = 'amount' placeholder="amount" id = 'amount'></br>
+       <input type="number" name='costs' placeholder="cost" id = 'costs'></br>
        <input type='submit' name ='submit'>
     </form>
     </div>
@@ -18,3 +18,7 @@
 {% endfor %}
 </div>
 {% endblock content %}
+<script type = "text/javascript">
+   document.getElementById("costs").value = "0";
+   document.getElementById("amount").value = "0";
+</script>

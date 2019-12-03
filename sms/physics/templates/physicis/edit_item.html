@@ -5,12 +5,16 @@
     <div align="center">
         <form method = "POST">
         {% csrf_token %}
-            <input type="number" name="amount" placeholder = "amount" value=0></br>
-            <input type"number" name="costs" placeholder = "costs" value=0></br>
+            <input type="number" name="amount" placeholder = "amount" id = "amount" ></br>
+            <input type"number" name="costs" placeholder = "costs" id = "costs"></br>
             <input type="submit" name="Submit">
         </form>
         </div>
 
     </div>
 </div>
+<script type = "text/javascript">
+   document.getElementById("costs").value = "0";
+   document.getElementById("amount").value = "0";
+</script>
 {% endblock content %}
