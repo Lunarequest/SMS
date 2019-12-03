@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% extends 'library/base.html' %}
+{% block content %}
+<body>
+
+<div class="topnav">
+  <a href="#">Done</a>
+    <a href="#">Logout</a>
+     <a href="library/add">add</a>
+</div>
+
+<div class="content">
+  <h2>Stock Database</h2>
+    <h3>Library</h3>
+
+ <table>
+ <thead>
+    <td>book id</td>
+    <td>name</td>
+    <td>avalible</td>
+    <td>issue</td>
+ </thead>
+ <tbody>
+    {% for item in items %}
+        <tr>
+            <td>{{item.book_id}}</td>
+            <td>{{item.book_name}}</td>
+            <td>{{item.availabity}}</td>
+            <td>
+                <a href = {% url 'library:issue_with_pk' item.book_id %}  class = "btn btn-warnning btn-sml" role = "button">issue</a>
+            </td>
+        </tr>
+    {% endfor %}
+ </tbody>
+ </table>
+</div>
+
+
+
+</body>
+{% endblock content %}

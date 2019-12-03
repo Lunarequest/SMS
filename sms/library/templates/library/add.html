@@ -1,0 +1,14 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<form method = "POST" align = "center">
+{% csrf_token %}
+    <input type = "number" placeholder = "book id" name = "book_id"></br>
+    <input type = "text" placeholder = "name of book" name="book_name"></br>
+    <input type = "number" placeholder = "number of copies" name="num_copy"></br>
+    <input type = "submit">
+</from>
+
+{% for message in messages %}
+    {{message}}
+{% endfor %}
+{% endblock content %}

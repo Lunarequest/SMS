@@ -29,12 +29,13 @@
         <td>{{item.bio_eq_name}}</td>
         <td>{{item.bio_eq_amount}}</td>
         <td>
-        <a href={% url 'bio_lab:edit_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
+          <a href={% url 'bio_lab:edit_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
+        </td>
         <td>
           <a href={% url 'bio_lab:broken_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">broken by student</a>
         </td>
         <td>
-        <a href={% url 'bio_lab:delete_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">delete</a>
+         <a href={% url 'bio_lab:delete_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">delete</a>
         </td>
       </tr>
     {% endfor %}

@@ -1,0 +1,12 @@
+{% extends 'library/base.html' %}
+{% block content %}
+{{name}}
+<form method = "POST" align="center">
+{% csrf_token %}
+    <input type = "number" placeholder = "student id"></br>
+    <input type = "submit">
+</form>
+{% for message in messages %}
+    {{message}}
+{% endfor %}
+{% endblock content %}
