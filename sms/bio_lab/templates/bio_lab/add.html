@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 <div align ="center">
-    <form>
+    <form method = 'POST'>
     {% csrf_token %}
         <input type="number" name="id" placeholder="equipmnet id"></br>
         <input type="text" name="name" placeholder="equipmnet name"></br>
         <input type="number" name="amount" placeholder="amount"></br>
-        <input type="submit" name="submit">
+        <input type="cost" name="cost" placeholder="cost"></br>
+        <input type="submit" value="Submit">
     </form>
 </div>
 <div>

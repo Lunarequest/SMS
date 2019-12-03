@@ -86,6 +86,7 @@ def add(request):
             phy_eq_id = request.POST['id']
             phy_eq_name = request.POST['name']
             phy_eq_amount = request.POST['amount']
+            phy_eq_cost = request.POST['cost']
             if phy_eq.objects.filter(phy_eq_id=phy_eq_id).exists():
                 messages=messages.info(request,"equipment id exits(each id must be unique)")
                 return redirect("/phy/add")

@@ -83,17 +83,22 @@ def delete(request, bio_eq_id):
 def add(request):
     if request.user.groups.filter(name__in=['bio_member']):
         if(request.method=="POST"):
-            bio_eq_id = request.POST['id']
+            bio_eq_id = int(request.POST['id'])
             bio_eq_name = request.POST['name']
-            bio_eq_amount = request.POST['amount']
+            bio_eq_amount = int(request.POST['amount'])
+            bio_eq_cost = int(request.POST['cost'])
             if bio_eq.objects.filter(bio_eq_id=bio_eq_id).exists():
                 messages=messages.info(request,"equipment id exits(each id must be unique)")
                 return redirect("/bio/add")
             elif(bio_eq_amount<=0):
                 messages.info(request,"enter a vaild ammount")
                 return redirect("/bio/add")
+            elif(bio_eq_cost<=0):
+                messages.info(request,"enter a vaild cost")
+                return redirect("/bio/add")
             else:
-                p = bio_eq(bio_eq_id=bio_eq_id,bio_eq_name=bio_eq_name, bio_eq_amount=bio_eq_amount)
+                
+                p = bio_eq(bio_eq_id=bio_eq_id,bio_eq_name=bio_eq_name,bio_eq_amount=bio_eq_amount,bio_eq_cost=bio_eq_cost)
                 p.save()
                 return redirect("/bio")
         else:
