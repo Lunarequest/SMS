@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'physics',
     'reg',
     'sel',
+    'library',
     'costs',
     'django_jenkins',
     'crispy_forms',
