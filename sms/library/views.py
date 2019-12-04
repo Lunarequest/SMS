@@ -5,7 +5,11 @@ from django.http import HttpResponse
 from django.contrib import messages
 from costs.models import student
 import datetime
-# Create your views here.
+# Create your views here
+def late():
+    today = datetime.date.today()
+
+    
 def console(request):
     items = book.objects.all()
     items2 = issues.objects.all()
