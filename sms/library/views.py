@@ -55,3 +55,6 @@ def delete(request, book_id):
     book.objects.filter(pk=book_id).delete()
     book_copy.objects.filter(book_name = name).delete()
     return redirect("/library")
+
+def return_book(request):
+    pass
