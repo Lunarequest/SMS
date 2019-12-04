@@ -28,15 +28,15 @@ def add(request):
         book_name = request.POST['book_name']
         num_copy = int(request.POST['num_copy'])
         if(book.objects.filter(book_id=book_id).exists()):
-            message.info(request,"book id exits")
+            messages.info(request,"book id exits")
             return redirect("library/add")
         elif(num_copy<=0):
             messages.info(request,"enter valid amount of books")
             return redirect("library/add")
         else:
-            p = book_copy(book_name = book_name, num_copy = num_copy)
+            p = book_copy(book_name = book_name, num_copy = num_copy, num_copies_available = num_copy )
             p.save()
-            q = book(book_id = book_id, book_name =book_name,  availabity =True)
+            q = book(book_id = book_id, book_name =book_name,  availabity = True)
             q.save()
             return redirect("/library")
     else:
