@@ -11,6 +11,7 @@ def console(request):
     items2 = issues.objects.all()
     return render(request, 'library/console.html', locals())
 
+
 def issue(request, book_id):
     if(request.method == "POST"):
         student_id = request.POST.get('student_id')
@@ -24,6 +25,7 @@ def issue(request, book_id):
         cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
         name = str(cursor.fetchone())
         return render(request, 'library/issue.html', locals())
+
 
 def add(request):
     if(request.method == "POST"):
@@ -44,6 +46,7 @@ def add(request):
             return redirect("/library")
     else:
         return render(request, 'library/add.html')
+
 
 def delete(request, book_id):
     cursor = connection.cursor()
