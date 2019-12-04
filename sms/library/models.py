@@ -4,7 +4,7 @@ from django.db import models
 class book_copy(models.Model):
     book_name = models.CharField(max_length=500)
     num_copy =  models.PositiveIntegerField()
-    num_copies_available = models.PositiveIntegerField()
+    num_copies_available = models.PositiveIntegerField(default=1)
 class book(models.Model):
     book_id = models.PositiveIntegerField(primary_key = True)
     book_name = models.CharField(max_length=500)

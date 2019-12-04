@@ -4,8 +4,7 @@
 <body>
 
 <div class="topnav">
-  <a href="#">Done</a>
-    <a href="#">Logout</a>
+    <a href="/logout">Logout</a>
      <a href="library/add">add</a>
 </div>
 
@@ -19,6 +18,7 @@
     <td>name</td>
     <td>avalible</td>
     <td>issue</td>
+    <td>delete</td>
  </thead>
  <tbody>
     {% for item in items %}
@@ -28,6 +28,9 @@
             <td>{{item.availabity}}</td>
             <td>
                 <a href = {% url 'library:issue_with_pk' item.book_id %}  class = "btn btn-warnning btn-sml" role = "button">issue</a>
+            </td>
+            <td>
+                <a href = {% url 'library:delete' item.book_id %}  class = "btn btn-warnning btn-sml" role = "button">delete</a>
             </td>
         </tr>
     {% endfor %}

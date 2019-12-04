@@ -3,7 +3,8 @@
 {{name}}
 <form method = "POST" align="center">
 {% csrf_token %}
-    <input type = "number" placeholder = "student id"></br>
+    <input type = "number" placeholder = "student id" name = "student_id"></br>
+    <input type = "date" value = "dd-mm-yy" name = "rt_date"></br>
     <input type = "submit">
 </form>
 {% for message in messages %}

@@ -4,6 +4,7 @@ from django.db import connection
 from django.http import HttpResponse
 from django.contrib import messages
 from costs.models import student
+import datetime
 # Create your views here.
 def console(request):
     items = book.objects.all()
@@ -12,9 +13,11 @@ def console(request):
 
 def issue(request, book_id):
     if(request.method == "POST"):
-        student_id = request.POST['student_id']
-        if(student.objects.filter(student_id=student_id).extist()):
-            p = issues()
+        student_id = request.POST.get('student_id')
+        return_date = request.POST.get('rt_date')
+        if(student.objects.filter(student_id=student_id).exists()):
+            date = datetime.date.now()
+            p = issues(book_id=book_id, student_id = student_id,issue_date=date, )
             return HttpResponse('works')
     else:
         cursor = connection.cursor()
@@ -41,3 +44,11 @@ def add(request):
             return redirect("/library")
     else:
         return render(request, 'library/add.html')
+
+def delete(request, book_id):
+    cursor = connection.cursor()
+    cursor.execute('''SELECT book_name FROM library_book WHERE book_id = book_id''')
+    name = cursor.fetchone()
+    book.objects.filter(pk=book_id).delete()
+    book_copy.objects.filter(book_name = name).delete()
+    return redirect("/library")
