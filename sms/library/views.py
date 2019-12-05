@@ -8,8 +8,9 @@ import datetime
 # Create your views here
 def late():
     today = datetime.date.today()
+    #may be cursor.fetchall() or cursor.fetchmany() need to do more reserch
 
-    
+
 def console(request):
     items = book.objects.all()
     items2 = issues.objects.all()
