@@ -13,10 +13,12 @@
     <h3>Library</h3>
 
  <table>
+ <caption>books in library</caption>
  <thead>
     <td>book id</td>
     <td>name</td>
     <td>avalible</td>
+    <td>number of copies</td>
     <td>issue</td>
     <td>delete</td>
  </thead>
@@ -26,6 +28,7 @@
             <td>{{item.book_id}}</td>
             <td>{{item.book_name}}</td>
             <td>{{item.availabity}}</td>
+            <td>{{item2.num_copies_available}}</td>
             <td>
                 <a href = {% url 'library:issue_with_pk' item.book_id %}  class = "btn btn-warnning btn-sml" role = "button">issue</a>
             </td>
@@ -33,6 +36,39 @@
                 <a href = {% url 'library:delete' item.book_id %}  class = "btn btn-warnning btn-sml" role = "button">delete</a>
             </td>
         </tr>
+    {% endfor %}
+ </tbody>
+ </table>
+ <table>
+    <caption>issued books</caption>
+ <thead>
+    <td>book id</td>
+    <td>student id</td>
+    <td>issue date</td>
+    <td>return date</td>
+ </thead>
+ <tbody>
+ {% for item in item3 %}
+  <td>{{item.book_id}}</td>
+  <td>{{item.student_id}}</td>
+  <td>{{item.issue_date}}</td>
+  <td>{{item.return_date}}</td>
+  <td>
+        <a href = {% url 'library:return_with_pk' item.book_id %}  class = "btn btn-warnning btn-sml" role = "button">return</a>
+  </td>
+  {% endfor %}
+  </tbody>
+  </table>
+ <table>
+ <caption>late books</caption>
+ <thead>
+    <td>student id</td>
+    <td>book id</td>
+ </thead>
+ <tbody>
+    {% for item in late_book %}
+    <td>{{item.student_id}}</td>
+    <td>{{item.book_id}}
     {% endfor %}
  </tbody>
  </table>
