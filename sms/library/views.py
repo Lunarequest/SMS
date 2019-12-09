@@ -16,6 +16,9 @@ def console(request):
         today = datetime.date.today()
         late_books = issues.objects.filter(return_date__lte=today)
         return render(request, 'library/console.html', locals())
+    else:
+        message = messages.info(request, 'error 401 access denied')
+        return redirect("/sel")
 
 
 def issue(request, book_id):
@@ -30,10 +33,10 @@ def issue(request, book_id):
                 p = issues(book_id=book_id, student_id=student_id, issue_date=date,return_date=return_date)
                 p.save()
                 cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
-                x =cursor.fetchone()
+                x=cursor.fetchone()
                 book_name = x[0]
                 cursor.execute('''SELECT num_copies_available FROM library_book_copy WHERE book_name=book_name''')
-                x = cursor.fetchone()
+                x= cursor.fetchone()
                 avil = x[0]
                 avil = avil-1
                 book.objects.filter(book_name=book_name).update(num_copies_available = avil)
@@ -71,7 +74,7 @@ def add(request):
 
 
 def delete(request, book_id):
-    '''removes a book permenatly'''
+    """removes a book permenatly"""
     if request.user.groups.filter(name__in=['lib_member']):
         cursor = connection.cursor()
         cursor.execute('''SELECT book_name FROM library_book WHERE book_id = book_id''')
@@ -81,7 +84,7 @@ def delete(request, book_id):
         return redirect("/library")
 
 def return_book(request, book_id):
-# returns an issued book
+    """returns an issued book"""
     if request.user.groups.filter(name__in=['lib_member']):
         issues.objects.filter(pk=book_id).delete()
         cursor = connection.cursor()
