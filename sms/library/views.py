@@ -1,3 +1,4 @@
+"""for date"""
 import datetime
 from django.shortcuts import render, redirect
 from django.db import connection
@@ -6,7 +7,7 @@ from costs.models import student
 from .models import book, issues, book_copy
 # Create your views here
 def console(request):
-#to display the website when requested
+    '''to display the website when requested'''
     if request.user.groups.filter(name__in=['lib_member']):
         cursor = connection.cursor()
         items = book.objects.all()
@@ -18,7 +19,7 @@ def console(request):
 
 
 def issue(request, book_id):
-# issues one book
+    '''issues one book'''
     if request.user.groups.filter(name__in=['lib_member']):
         if(request.method == "POST"):
             student_id = request.POST.get('student_id')
@@ -47,6 +48,7 @@ def issue(request, book_id):
 
 
 def add(request):
+    '''adds books from request'''
     if request.user.groups.filter(name__in=['lib_member']):
         if(request.method == "POST"):
             book_id = request.POST['book_id']
@@ -69,7 +71,7 @@ def add(request):
 
 
 def delete(request, book_id):
-#removes a book permenatly
+    '''removes a book permenatly'''
     if request.user.groups.filter(name__in=['lib_member']):
         cursor = connection.cursor()
         cursor.execute('''SELECT book_name FROM library_book WHERE book_id = book_id''')
