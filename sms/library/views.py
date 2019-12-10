@@ -11,7 +11,6 @@ def console(request):
     if request.user.groups.filter(name__in=['lib_member']):
         cursor = connection.cursor()
         items = book.objects.all()
-        items2 = book_copy.objects.all()
         item3 = issues.objects.all()
         today = datetime.date.today()
         late_books = issues.objects.filter(return_date__lte=today)
