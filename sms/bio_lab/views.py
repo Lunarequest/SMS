@@ -4,8 +4,6 @@ from django.contrib import messages
 from .models import bio_eq, bio_broken_eq
 from django.db import connection
 # Create your views here.
-def ValuesQuerySetToDict(vqs):
-    return [item for item in vqs]
 
 def console(request):
     if request.user.groups.filter(name__in=['bio_member']):
