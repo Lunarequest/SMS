@@ -14,3 +14,11 @@ class issues(models.Model):
     student_id = models.PositiveIntegerField()
     issue_date = models.DateField()
     return_date = models.DateField()
+class mass_book(models.Model):
+    ISBN = models.PositiveIntegerField()
+    ind_book_id = models.CharField(primary_key=True, max_length=1000)
+
+class num_ent(models.Model):
+    ISBN = models.PositiveIntegerField(primary_key=True)
+    num = models.PositiveIntegerField(default=0)
+    

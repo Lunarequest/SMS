@@ -18,9 +18,9 @@
     <td>book id</td>
     <td>name</td>
     <td>avalible</td>
-    <td>number of copies</td>
     <td>issue</td>
     <td>delete</td>
+    <td>add copy id</td>
  </thead>
  <tbody>
     {% for item in items %}
@@ -34,6 +34,9 @@
             <td>
                 <a href = {% url 'library:delete' item.book_id %}  class = "btn btn-warnning btn-sml" role = "button">delete</a>
             </td>
+            <td>
+                <a href = {% url 'library:add_id_with_pk' item.book_id %}  class = "btn btn-warnning btn-sml" role = "button">add_id</a>
+            </td>
         </tr>
     {% endfor %}
  </tbody>
@@ -41,10 +44,12 @@
  <table>
     <caption>issued books</caption>
  <thead>
-    <td>book id</td>
-    <td>student id</td>
-    <td>issue date</td>
-    <td>return date</td>
+    <tr>
+      <th>book id</th>
+      <th>student id</th>
+      <th>issue date</th>
+      <th>return date</th>
+    </tr>
  </thead>
  <tbody>
  {% for item in item3 %}

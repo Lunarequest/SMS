@@ -1,10 +1,11 @@
 """for date"""
 import datetime
+from django.shortcuts import HttpResponse
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib import messages
 from costs.models import student
-from .models import book, issues, book_copy
+from .models import book, issues, book_copy, mass_book, num_ent
 # Create your views here
 def console(request):
     '''to display the website when requested'''
@@ -70,8 +71,29 @@ def add(request):
                 return redirect("/library")
         else:
             return render(request, 'library/add.html')
-
-
+def add_copy_id(request, book_id):
+    if request.user.groups.filter(name__in=['lib_member']):
+        cursor = connection.cursor()
+        cursor.execute('''SELECT num FROM library_num_ent WHERE ISBN=book_id''')
+        x = cursor.fetchmany()
+        number = int(len(x[0]))
+        cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
+        x =cursor.fetchone()
+        book_name = x[0]
+        book_name = str(book_name)
+        cursor.execute('''SELECT num_copies_available FROM library_book_copy WHERE book_name=book_name''')
+        x = cursor.fetchone()
+        num_copy = int(x[0])
+        if(number != num_copy):
+            if(request.method == "POST"):
+                ind_book_id = request.POST['book_id']
+                q = mass_book(ISBN=book_id, ind_book_id=ind_book_id)
+                q.save()
+                return HttpResponse(request, "works")
+            else:
+                return render(request,'library/add_copy_id.html')
+        else:
+            return redirect("./library")
 def delete(request, book_id):
     """removes a book permenatly"""
     if request.user.groups.filter(name__in=['lib_member']):
