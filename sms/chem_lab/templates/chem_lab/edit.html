@@ -4,7 +4,7 @@
 <body>
 
 <div class="topnav">
-  <a href="save">Done</a>
+  <a href="/chem">Done</a>
     <a href="/logout">Logout</a>
      <a href="add_con">add chemical</a>
       <a href="add_eq">add equipmemt</a>
@@ -14,12 +14,14 @@
 
 </div>
 <table class = "table table-hover">
+  <caption>chemicals</caption>
   <thead>
     <tr>
       <th>id</th>
       <th>name</th>
-      <th>amount</th>
+      <td>amount</td>
       <th>exp_date</th>
+      <th>edit</th>
     </tr>
   </thead>
   <tbody>
@@ -34,11 +36,12 @@
         </td>
       </tr>
     {% endfor %}
-    
+
   </tbody>
 </table>
 
 <table class="table table-hover">
+  <caption>equipmemt</caption>
 <thead>
 <tr>
   <th>id</th>
@@ -63,7 +66,7 @@
         </td>
       </tr>
     {% endfor %}
-    
+
 </tbody>
 </table>
 </body>

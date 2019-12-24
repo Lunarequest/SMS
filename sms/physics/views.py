@@ -23,10 +23,10 @@ def edit(request, phy_eq_id = None):
             costs = int(request.POST['costs'])
             print(costs)
             if(amount > 0):
-                phy_eq.objects.filter(phy_eq_id=phy_eq_id).update(phy_ep_amount=amount)
+                phy_eq.objects.filter(phy_eq_id=phy_eq_id).update(phy_eq_amount=amount)
             if(costs > 0):
                 phy_eq.objects.filter(phy_eq_id=phy_eq_id).update(phy_eq_cost=costs)
-            
+
             return redirect("/physics")
         else:
             cursor = connection.cursor()
@@ -35,7 +35,7 @@ def edit(request, phy_eq_id = None):
             name = str(row[0])
             return render(request,'physicis/edit_item.html', locals())
 #this was all me
-def broken(request, bio_eq_id= None):       
+def broken(request, phy_eq_id = None):
     if request.user.groups.filter(name__in=['phy_member']):
         if(request.method == "POST"):
              broken=request.POST['broken']
@@ -50,34 +50,34 @@ def broken(request, bio_eq_id= None):
                  row = cursor.fetchone()
                  name = str(row[0])
                  student_id=request.POST['student_id']
-                 p = phy_broken_eq(bio_eq_id = bio_eq_id,student_id = student_id, bio_eq_name = name)
+                 p = phy_broken_eq(phy_eq_id = bio_eq_id,student_id = student_id, bio_eq_name = name)
                  p.save()
-                 phy_eq.objects.filter(pk=bio_eq_id).update(bio_eq_amount=amount)
+                 phy_eq.objects.filter(pk=phy_eq_id).update(phy_eq_amount=amount)
                  #bio_broken_eq.object.create(bio_eq_id=bio_eq_id,student=student_id,bio_eq_name=name)
 
-             return redirect("/bio")
+             return redirect("/physics")
         else:
             cursor = connection.cursor()
             cursor.execute('''SELECT bio_eq_name from bio_lab_bio_eq where bio_eq_id=bio_eq_id''')
             row = cursor.fetchone()
             name = str(row[0])
             return render(request,'physicis/delete.html', locals())
-       
-       
+
+
 def display(request):
     items = phy_eq.objects.all()
     context ={
         'items':items
     }
     return render(request,'physicis/edit.html',context)
-    
+
 
 
 def save(request):
     return redirect("/physics")
 
-def delete(request, bio_eq_id):
-    phy_eq.objects.filter(pk=bio_eq_id).delete()
+def delete(request, phy_eq_id):
+    phy_eq.objects.filter(pk=phy_eq_id).delete()
     return redirect("/physics")
 
 def add(request):
@@ -85,18 +85,16 @@ def add(request):
         if(request.method=="POST"):
             phy_eq_id = request.POST['id']
             phy_eq_name = request.POST['name']
-            phy_eq_amount = request.POST['amount']
-            phy_eq_cost = request.POST['cost']
+            phy_eq_amount = int(request.POST['amount'])
+            phy_eq_cost = int(request.POST['cost'])
             if phy_eq.objects.filter(phy_eq_id=phy_eq_id).exists():
-                messages=messages.info(request,"equipment id exits(each id must be unique)")
                 return redirect("/phy/add")
             elif(phy_eq_amount<=0):
-                messages.info(request,"enter a vaild ammount")
-                return redirect("/phy/add")
+                return redirect("/physics/add")
             else:
-                p = phy_eq(phy_eq_id=phy_eq_id,phy_eq_name=phy_eq_name, phy_eq_amount=phy_eq_amount)
+                p = phy_eq(phy_eq_id=phy_eq_id,phy_eq_name=phy_eq_name, phy_eq_amount=phy_eq_amount, phy_eq_cost=phy_eq_cost)
                 p.save()
-                return redirect("/phy")
+                return redirect("/physics")
         else:
             loc = 'physics lab'
             return render(request,'physicis/add.html', locals())

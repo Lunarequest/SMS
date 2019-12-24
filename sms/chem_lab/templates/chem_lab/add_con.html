@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-<div>
-    <form align='center'>
+<div align='center'>
+  {{chem}}
+    <form  method="POST">
         {% csrf_token %}
         <input type='number' placeholder='consumable id' name='id'></br>
         <input type='text' placeholder='name' name='chem_name'></br>

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div>
-    <form align='center'>
+    <form align='center' method="POST">
         {% csrf_token %}
         <input type='number' placeholder='equipment id' name='id'></br>
         <input type='text' placeholder='name' name='eq_name'></br>
