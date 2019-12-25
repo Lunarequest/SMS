@@ -1,0 +1,30 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<body>
+    <div class="topnav">
+        <a href="/libary">search again</a>
+    </div>
+    {% if items %}
+    <table>
+    <thead>
+        <tr>
+            <th>ISBN</th>
+            <th>book id</th>
+            <th>issue</th>
+        </tr>
+    </th>
+    <tbody>
+    {% for item in items %}
+        <td>{{item.ISBN}}</td>
+        <td>{{item.ind_book_id}}</td>
+        <td>
+            <a href = {% url 'library:issue_with_pk' item.ind_book_id %}  class = "btn btn-warnning btn-sml" role = "button">issue</a>
+        </td>
+    {% endfor %}
+    {% else %}
+    <h3>
+        no result found would you like to add it : <a href="/libary/add">add book</a>
+    </h3>
+    {% endif %}
+</body>
+{% endblock content %}

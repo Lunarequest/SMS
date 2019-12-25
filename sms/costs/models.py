@@ -8,7 +8,7 @@ class student(models.Model):
     student_grade = models.IntegerField()
     student_section = models.CharField(max_length=500)
 
-class garde(models.Model):
+class grade(models.Model):
     student_grade = models.PositiveIntegerField()
     student_section = models.CharField(max_length=500)
     teacher_email_1 = models.EmailField()

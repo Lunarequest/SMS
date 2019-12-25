@@ -1,27 +1,65 @@
 """for date"""
 import datetime
-from django.shortcuts import HttpResponse
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib import messages
-from costs.models import student
+from django.core.mail import EmailMessage 
+from costs.models import student, grade
 from .models import book, issues, book_copy, mass_book, num_ent
 # Create your views here
 def console(request):
     '''to display the website when requested'''
     if request.user.groups.filter(name__in=['lib_member']):
-        cursor = connection.cursor()
-        items = book.objects.all()
-        item3 = issues.objects.all()
-        today = datetime.date.today()
-        item2 = mass_book.objects.all()
-        late_books = issues.objects.filter(return_date__lte=today)
-        return render(request, 'library/console.html', locals())
+        if(request.method == "POST"):
+            q = request.POST['q']
+            items = mass_book.objects.filter(ISBN=q)
+            return render(request, "library/results.html", locals())
+        else:
+            cursor = connection.cursor()
+            items = book.objects.all()
+            item3 = issues.objects.all()
+            today = datetime.date.today()
+            item2 = mass_book.objects.all()
+            late_books = issues.objects.filter(return_date__lte=today)
+            return render(request, 'library/console.html', locals())
     else:
         message = messages.info(request, 'error 401 access denied')
         return redirect("/sel")
-
-
+def report(request, student_id):
+    if student.objects.filter(pk=student_id).exists():
+        cursor = connection.cursor()
+        cursor.execute('''SELECT book_id FORM library_issues WHERE student_id=student_id ''')
+        temp = cursor.fetchone()
+        ind_book_id=temp[0]
+        cursor.execute('''SELECT ISBN FROM library_mass_book WHERE ind_book_id=ind_book_id''')
+        row = cursor.fetchone()
+        book_id = row[0]
+        cursor.execute('''SELECT book_name FORM library_book WHERE book_id=book_id''')
+        temp = cursor.fetchone()
+        book_name= temp[0]
+        cursor.execute('''SELECT sutdent_name FORM costs_student WHERE student_id=student_id ''')
+        temp = cursor.fetchone()
+        student_name= temp[0]
+        cursor.execute('''SELECT sutdent_grade FORM costs_student WHERE student_id=student_id ''')
+        temp = cursor.fetchone()
+        student_grade = temp[0]
+        cursor.execute('''SELECT sutdent_section FORM costs_student WHERE student_id=student_id ''')
+        temp = cursor.fetchone()
+        student_section = temp[0]
+        cursor.execute('''SELECT  teacher_email_1 FROM costs_grade WHERE student_grade=student_grade AND student_section=student_section''')     
+        temp = cursor.fetchone()
+        teacher_email_1 = temp[0]
+        cursor.execute('''SELECT  teacher_email_2 FROM costs_grade WHERE student_grade=student_grade AND student_section=student_section''') 
+        temp = cursor.fetchone()
+        teacher_email_2 = temp[0]
+        mail_subject = "late books"
+        message = student_name + "has not returned the book: "+book_name
+        to_email = teacher_email_1
+        email = EmailMessage(subject=mail_subject,body=message, to=[to_email])
+        email.send()
+        to_email = teacher_email_2
+        email = EmailMessage(subject=mail_subject,body=message, to=[to_email])
+        email.send()
 def issue(request, ind_book_id):
     '''issues one book'''
     if request.user.groups.filter(name__in=['lib_member']):
