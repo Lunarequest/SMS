@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
-{% load render_table from django_tables2 %}
 {% block content %}
 <body>
   <div class="topnav">
@@ -12,7 +11,25 @@
   <div class="content">
     <h2>Stock Database</h2>
       <h3>{{loc}}</h3>
-      {% render_table items %}
+      <table>
+      <caption>physics equipment</caption>
+      <thead>
+        <tr>
+          <th>equipment id</th>
+          <th>equipment name</th>
+          <th>amount</th>
+          <th>cost</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in items %}
+       <td>{{item.phy_eq_id}}</td>
+       <td>{{item.phy_eq_name}}</td>
+       <td>{{item.phy_eq_amount}}</td>
+       <td>{{item.phy_eq_cost}}</td>
+      {% endfor %}
+      </tbody>
+      </table>
   </div>
 
 
