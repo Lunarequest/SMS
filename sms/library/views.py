@@ -73,27 +73,30 @@ def add(request):
             return render(request, 'library/add.html')
 def add_copy_id(request, book_id):
     if request.user.groups.filter(name__in=['lib_member']):
-        cursor = connection.cursor()
-        cursor.execute('''SELECT num FROM library_num_ent WHERE ISBN=book_id''')
-        x = cursor.fetchmany()
-        number = int(len(x[0]))
-        cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
-        x =cursor.fetchone()
-        book_name = x[0]
-        book_name = str(book_name)
-        cursor.execute('''SELECT num_copies_available FROM library_book_copy WHERE book_name=book_name''')
-        x = cursor.fetchone()
-        num_copy = int(x[0])
-        if(number != num_copy):
-            if(request.method == "POST"):
-                ind_book_id = request.POST['book_id']
-                q = mass_book(ISBN=book_id, ind_book_id=ind_book_id)
-                q.save()
-                return HttpResponse(request, "works")
-            else:
-                return render(request,'library/add_copy_id.html')
+        if(request.method == "POST"):
+            cursor = connection.cursor()
+            ISBN = book_id
+            cursor.execute('''SELECT num FROM library_num_ent WHERE ISBN=ISBN''')
+            x = cursor.fetchone()
+            number = int(x[0])
+            cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
+            x = cursor.fetchone()
+            book_name = x[0]
+            book_name = str(book_name)
+            cursor.execute('''SELECT num_copies_available FROM library_book_copy WHERE book_name=book_name''')
+            x = cursor.fetchone()
+            num_copy = int(x[0])
+            if(number != num_copy):
+                if(request.method == "POST"):
+                    ind_book_id = request.POST['book_id']
+                    q = mass_book(ISBN=book_id, ind_book_id=ind_book_id)
+                    q.save()
+                    return HttpResponse(request, "works")
         else:
-            return redirect("./library")
+                return render(request,'library/add_copy_id.html')
+    else:
+        message = messages.info(request,"error 401 acesss denid")
+        return redirect("/library", locals())    
 def delete(request, book_id):
     """removes a book permenatly"""
     if request.user.groups.filter(name__in=['lib_member']):
