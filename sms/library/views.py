@@ -22,7 +22,7 @@ def console(request):
         return redirect("/sel")
 
 
-def issue(request, book_id):
+def issue(request, ind_book_id):
     '''issues one book'''
     if request.user.groups.filter(name__in=['lib_member']):
         if(request.method == "POST"):
@@ -31,7 +31,10 @@ def issue(request, book_id):
             if(student.objects.filter(student_id=student_id).exists()):
                 cursor = connection.cursor()
                 date = datetime.date.today()
-                p = issues(book_id=book_id, student_id=student_id, issue_date=date,return_date=return_date)
+                cursor.execute('''SELECT ISBN FROM library_mass_book WHERE ind_book_id=ind_book_id''')
+                row = cursor.fetchone()
+                book_id = row[0]
+                p = issues(book_id=ind_book_id, student_id=student_id, issue_date=date, return_date=return_date)
                 p.save()
                 cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
                 x=cursor.fetchone()
@@ -40,7 +43,7 @@ def issue(request, book_id):
                 x= cursor.fetchone()
                 avil = x[0]
                 avil = avil-1
-                book.objects.filter(book_name=book_name).update(num_copies_available = avil)
+                book_copy.objects.filter(book_name=book_name).update(num_copies_available = avil)
                 if(avil == 0):
                     book.objects.filter(book_id=book_id).update(avilabilty=False)
                 return redirect("/library")

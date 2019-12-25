@@ -6,3 +6,10 @@ class student(models.Model):
     student_id = models.IntegerField(primary_key=True)
     student_name = models.CharField(max_length=50)
     student_grade = models.IntegerField()
+    student_section = models.CharField(max_length=500)
+
+class garde(models.Model):
+    student_grade = models.PositiveIntegerField()
+    student_section = models.CharField(max_length=500)
+    teacher_email_1 = models.EmailField()
+    teacher_email_2 = models.EmailField()

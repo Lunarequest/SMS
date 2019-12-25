@@ -10,7 +10,7 @@ class book(models.Model):
     book_name = models.CharField(max_length=500)
     availabity = models.BooleanField(default=True)
 class issues(models.Model):
-    book_id = models.PositiveIntegerField(primary_key=True)
+    book_id = models.CharField(max_length=1000, primary_key=True)
     student_id = models.PositiveIntegerField()
     issue_date = models.DateField()
     return_date = models.DateField()
