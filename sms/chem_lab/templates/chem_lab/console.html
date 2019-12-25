@@ -11,8 +11,44 @@
   <div class="content">
     <h2>Stock Database</h2>
       <h3>{{loc}}</h3>
-      {% render_table items %}
-      {% render_table items2 %}
+      <table>
+      <caption>chemicals</caption>
+      <thead>
+        <tr>
+          <th>consumable id</th>
+          <th>chemical name</th>
+          <th>amount</th>
+          <th>exp date</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in items %}
+        <td>{{item.consumable_id}}</td>
+        <td>{{item.chem_names}}</td>
+        <td>{{item.chem_amount}}</td>
+        <td>{{item.exp_date}}</td>
+      {% endfor %}
+      </tbody>
+      </table>
+      <table>
+      <caption>equipment</caption>
+      <thead>
+        <tr>
+          <th>eqipment id</th>
+          <th>eqipment names</th>
+          <th>amount</th>
+          <th>cost</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in items2 %}
+        <td>{{item.chem_eq_id}}</td>
+        <td>{{item.chem_eq_names}}</td>
+        <td>{{item.chem_eq_amount}}</td>
+        <td>{{item.chem_eq_cost}}</td>
+      {% endfor %}
+      </tbody>
+      </table>
   </div>
 
 

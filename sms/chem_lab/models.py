@@ -10,7 +10,7 @@ class chem_con(models.Model):
     reo = models.PositiveIntegerField()
 
 class chem_eq(models.Model):
-    chem_eq_id = models.IntegerField(primary_key=True)
+    chem_eq_id= models.IntegerField(primary_key=True)
     chem_eq_names = models.CharField(max_length=50)
     chem_eq_amount = models.PositiveIntegerField()
     chem_eq_cost  = models.PositiveIntegerField()
