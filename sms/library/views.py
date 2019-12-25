@@ -3,7 +3,7 @@ import datetime
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib import messages
-from django.core.mail import EmailMessage 
+from django.core.mail import EmailMessage
 from costs.models import student, grade
 from .models import book, issues, book_copy, mass_book, num_ent
 # Create your views here

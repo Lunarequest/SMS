@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
+from django.core.mail import EmailMessage
 from .models import chem_con, chem_eq, ch_broken_eq
 from django.db import connection
 # Create your views here.
@@ -28,6 +29,21 @@ def edit_con(request, consumable_id):
              date=request.POST['exp_date']
              chem_con.objects.filter(consumable_id=consumable_id).update(chem_amount=amount)
              chem_con.objects.filter(consumable_id=consumable_id).update(exp_date=date)
+             cursor = connection.cursor
+             cursor.execute('''SELECT reo FROM chem_lab_chem_con WHERE consumable_id=consumable_id''')
+             temp = cursor.fetchone()
+             reo = int(temp[0])
+             if(amount<=reo):
+                cursor.execute('''SELECT chem_names FROM chem_lab_chem_con WHERE consumable_id=consumable_id''')
+                temp = cursor.fetchone()
+                chem_name = temp[0]
+                email_subject = "reorder " + chem_name
+                message = "please reorder " + chem_name
+                cursor.execute('''SELECT supervisor_email FROM costs_super_email''')
+                temp = cursor.fetchone()
+                to_email = temp[0]
+                email = EmailMessage(subject=email_subject, body=message, to=[to_email])
+                email.send()
              return redirect("/physics")
         else:
             return render(request,'chem_lab/edit_con_item.html')
@@ -46,9 +62,9 @@ def broken(request, chem_eq_id):
                  cursor.execute('''SELECT chem_eq_name from chem_lab_chem_eq where chem_eq_id=bio_eq_id''')
                  row=cursor.fetchone()
                  name=str(row[0])
-                 p=ch_broken_eq(chem_eq_id=bio_eq_id, student_id=student_id, chem_eq_name=name)
+                 p=ch_broken_eq(chem_eq_id=chem_eq_id, student_id=student_id, chem_eq_name=name)
                  p.save()
-                 chem_eq.objects.filter(chem_eq_id=bio_eq_id).update(chem_eq_amount=amount)
+                 chem_eq.objects.filter(chem_eq_id=chem_eq_id).update(chem_eq_amount=amount)
                  return redirect("/chem")
         else:
             return render(request,'chem_lab/broken_item.html')
@@ -75,12 +91,13 @@ def add_con(request):
             con_id = request.POST['id']
             name = request.POST['chem_name']
             amount = request.POST['q']
+            reo = request.POST['reo']
             exp_date = request.POST['exp_date']
             if(chem_con.objects.filter(consumable_id=con_id).exists()):
                 messages.info(request,'consumable id is not uniqe!')
                 return redirect("/chem/add_con")
             else:
-                q=chem_con(consumable_id=con_id, chem_names=name,  chem_amount=amount, exp_date=exp_date)
+                q=chem_con(consumable_id=con_id, chem_names=name,  chem_amount=amount, exp_date=exp_date, reo=reo)
                 q.save()
         else:
 

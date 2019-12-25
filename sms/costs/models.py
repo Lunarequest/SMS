@@ -13,3 +13,6 @@ class grade(models.Model):
     student_section = models.CharField(max_length=500)
     teacher_email_1 = models.EmailField()
     teacher_email_2 = models.EmailField()
+
+class super_email(models.Model):
+    supervisor_email = models.EmailField()

@@ -7,6 +7,7 @@ class chem_con(models.Model):
     chem_names = models.CharField(max_length=50)
     chem_amount = models.FloatField()
     exp_date = models.CharField(max_length=50)
+    reo = models.PositiveIntegerField()
 
 class chem_eq(models.Model):
     chem_eq_id = models.IntegerField(primary_key=True)
