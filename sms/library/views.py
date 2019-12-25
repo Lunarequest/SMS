@@ -14,6 +14,7 @@ def console(request):
         items = book.objects.all()
         item3 = issues.objects.all()
         today = datetime.date.today()
+        item2 = mass_book.objects.all()
         late_books = issues.objects.filter(return_date__lte=today)
         return render(request, 'library/console.html', locals())
     else:
@@ -72,6 +73,7 @@ def add(request):
         else:
             return render(request, 'library/add.html')
 def add_copy_id(request, book_id):
+    from django.contrib import messages
     if request.user.groups.filter(name__in=['lib_member']):
         if(request.method == "POST"):
             cursor = connection.cursor()
@@ -89,22 +91,35 @@ def add_copy_id(request, book_id):
             if(number != num_copy):
                 if(request.method == "POST"):
                     ind_book_id = request.POST['book_id']
-                    q = mass_book(ISBN=book_id, ind_book_id=ind_book_id)
-                    q.save()
-                    return HttpResponse(request, "works")
+                    if mass_book.objects.filter(ind_book_id=ind_book_id).exits():
+                        message = messages.info(request, "id already exists")
+                        return redirect("/library")
+                    else:
+                        q = mass_book(ISBN=book_id, ind_book_id=ind_book_id)
+                        q.save()
+                        number = number + 1
+                        num_ent.objects.filter(ISBN=ISBN).update(num=number)
+                        return redirect("/library")
         else:
-                return render(request,'library/add_copy_id.html')
+            return render(request, 'library/add_copy_id.html')
     else:
         message = messages.info(request,"error 401 acesss denid")
         return redirect("/library", locals())    
-def delete(request, book_id):
+def delete(request, ind_book_id):
     """removes a book permenatly"""
     if request.user.groups.filter(name__in=['lib_member']):
         cursor = connection.cursor()
+        cursor.execute('''SELECT ISBN FROM library_mass_book WHERE ind_book_id=ind_book_id''')
+        temp = cursor.fetchone()
+        book_id = int(temp[0])
         cursor.execute('''SELECT book_name FROM library_book WHERE book_id = book_id''')
-        name = cursor.fetchone()
-        book.objects.filter(pk=book_id).delete()
-        book_copy.objects.filter(book_name=name).delete()
+        book_name = cursor.fetchone()
+        cursor.execute('''SELECT num_copy FROM library_book_copy WHERE book_name=book_name''')
+        x = cursor.fetchone()
+        num = int(x[0])
+        num = num - 1
+        book_copy.objects.filter(book_name=book_name).update(num_copy=num)
+        mass_book.objects.filter(ind_book_id=ind_book_id).delete()
         return redirect("/library")
 
 def return_book(request, book_id):

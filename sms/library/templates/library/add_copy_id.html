@@ -3,3 +3,8 @@
      <input type = 'text', name = 'book_id'>
      <input type = 'submit', name = 'submit'>
 </form>
+<div align = "middle">
+{% for message in messages %}
+     <h3>{{message}}</h3>
+{% endfor %}
+</div>
