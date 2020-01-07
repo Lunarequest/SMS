@@ -22,10 +22,12 @@
       </thead>
       <tbody>
       {% for item in items %}
+      <tr>
         <td>{{item.consumable_id}}</td>
         <td>{{item.chem_names}}</td>
         <td>{{item.chem_amount}}</td>
         <td>{{item.exp_date}}</td>
+      </tr>
       {% endfor %}
       </tbody>
       </table>
@@ -41,10 +43,12 @@
       </thead>
       <tbody>
       {% for item in items2 %}
+      <tr>
         <td>{{item.chem_eq_id}}</td>
         <td>{{item.chem_eq_names}}</td>
         <td>{{item.chem_eq_amount}}</td>
         <td>{{item.chem_eq_cost}}</td>
+      </tr>
       {% endfor %}
       </tbody>
       </table>

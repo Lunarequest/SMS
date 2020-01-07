@@ -51,6 +51,7 @@
 </thead>
 <tbody>
    {% for item in item2 %}
+   <tr>
       <td>{{item.ISBN}}</td>
       <td>{{item.ind_book_id}}</td>
       <td>
@@ -59,6 +60,7 @@
       <td>
           <a href = {% url 'library:delete' item.ind_book_id %}  class = "btn btn-warnning btn-sml" role = "button">delete</a>
       </td>
+   </tr>
    {% endfor %}
 </tbody>
  </table>
@@ -74,6 +76,7 @@
  </thead>
  <tbody>
  {% for item in item3 %}
+ <tr>
   <td>{{item.book_id}}</td>
   <td>{{item.student_id}}</td>
   <td>{{item.issue_date}}</td>
@@ -81,6 +84,7 @@
   <td>
         <a href = {% url 'library:return_with_pk' item.book_id %}  class = "btn btn-warnning btn-sml" role = "button">return</a>
   </td>
+  </tr>
   {% endfor %}
   </tbody>
   </table>
@@ -92,8 +96,10 @@
  </thead>
  <tbody>
     {% for item in late_book %}
+    <tr>
     <td>{{item.student_id}}</td>
     <td>{{item.book_id}}
+    </tr>
     {% endfor %}
  </tbody>
  </table>

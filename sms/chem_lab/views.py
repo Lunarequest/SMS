@@ -33,6 +33,7 @@ def edit_con(request, consumable_id):
              cursor.execute('''SELECT reo FROM chem_lab_chem_con WHERE consumable_id=consumable_id''')
              temp = cursor.fetchone()
              reo = int(temp[0])
+             return redirect("/chem")
              if(amount<=reo):
                 cursor.execute('''SELECT chem_names FROM chem_lab_chem_con WHERE consumable_id=consumable_id''')
                 temp = cursor.fetchone()
@@ -44,7 +45,6 @@ def edit_con(request, consumable_id):
                 to_email = temp[0]
                 email = EmailMessage(subject=email_subject, body=message, to=[to_email])
                 email.send()
-             return redirect("/physics")
         else:
             return render(request,'chem_lab/edit_con_item.html')
 
@@ -99,6 +99,7 @@ def add_con(request):
             else:
                 q=chem_con(consumable_id=con_id, chem_names=name,  chem_amount=amount, exp_date=exp_date, reo=reo)
                 q.save()
+                return redirect("/chem")
         else:
 
             return render(request,'chem_lab/add_con.html')

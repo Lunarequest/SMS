@@ -132,7 +132,7 @@ def add_copy_id(request, book_id):
             if(number != num_copy):
                 if(request.method == "POST"):
                     ind_book_id = request.POST['book_id']
-                    if mass_book.objects.filter(ind_book_id=ind_book_id).exits():
+                    if mass_book.objects.filter(ind_book_id=ind_book_id).exists():
                         message = messages.info(request, "id already exists")
                         return redirect("/library")
                     else:
@@ -141,6 +141,7 @@ def add_copy_id(request, book_id):
                         number = number + 1
                         num_ent.objects.filter(ISBN=ISBN).update(num=number)
                         return redirect("/library")
+            return redirect("/library")
         else:
             return render(request, 'library/add_copy_id.html')
     else:
