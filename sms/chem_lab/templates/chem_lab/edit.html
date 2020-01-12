@@ -11,8 +11,19 @@
 </div>
 
 <div class="content" >
-
-</div>
+  </div>
+ <div class="w3-row-padding w3-padding-16 w3-center" id="food">
+    <div class="w3-quarter">
+      <img src="https://www.alfa.com/static/images/Chemicals1_001.gif" alt="Sandwich" style="width:100%">
+            <!-- Trigger/Open the Modal -->
+            <p><button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Chemicals</button></p>
+            <!-- The Modal -->
+            <div id="id01" class="w3-modal">
+            <div class="w3-modal-content">
+            <div class="w3-container">
+            <span onclick="document.getElementById('id01').style.display='none'"
+            class="w3-button w3-display-topright">&times;</span>
+                <p><button> Edit</button></p>
 <table class = "table table-hover">
   <caption>chemicals</caption>
   <thead>
@@ -39,36 +50,59 @@
 
   </tbody>
 </table>
+</div>
+</div>
+</div>
+</div>
+<div class="w3-quarter">
+      <img src="https://today.tamu.edu/wp-content/uploads/2009/07/GettyImages-139880247.jpg" style="width:65%">
+      <p><button onclick="document.getElementById('id04').style.display='block'" style="width:auto;">Equipment</button></p>
+            <!-- The Modal -->
+            <div id="id04" class="w3-modal">
+            <div class="w3-modal-content">
+            <div class="w3-container">
+            <span onclick="document.getElementById('id04').style.display='none'"
+            class="w3-button w3-display-topright">&times;</span>
+  <table class="table table-hover">
+    <caption>equipmemt</caption>
+  <thead>
+  <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>amount</th>
+    <th>edit</th>
+    <th>broken by student</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for item in items2 %}
+        <tr>
+          <td>{{item.chem_eq_id}}</td>
+          <td>{{item.chem_eq_name}}</td>
+          <td>{{item.chem_eq_amount}}</td>
+          <td>{{item.exp_date}}</td>
+          <td>
+            <a href={% url 'chem_lab:edit_eq' item.chem_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
+          </td>
+          <td>
+          <a href={% url 'chem_lab:broken_with_pk' item.chem_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">broken</a>
+          </td>
+        </tr>
+      {% endfor %}
 
-<table class="table table-hover">
-  <caption>equipmemt</caption>
-<thead>
-<tr>
-  <th>id</th>
-  <th>name</th>
-  <th>amount</th>
-  <th>edit</th>
-  <th>broken by student</th>
-</tr>
-</thead>
-<tbody>
-{% for item in items2 %}
-      <tr>
-        <td>{{item.chem_eq_id}}</td>
-        <td>{{item.chem_eq_name}}</td>
-        <td>{{item.chem_eq_amount}}</td>
-        <td>{{item.exp_date}}</td>
-        <td>
-          <a href={% url 'chem_lab:edit_eq' item.chem_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
-        </td>
-        <td>
-        <a href={% url 'chem_lab:broken_with_pk' item.chem_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">broken</a>
-        </td>
-      </tr>
-    {% endfor %}
+  </tbody>
+  </table>
+</div>
+<script>
+// Script to open and close sidebar
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
 
-</tbody>
-</table>
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+</script>
 </body>
 </html>
 {% endblock content %}
