@@ -4,7 +4,6 @@
 <body>
 
 <div class="topnav">
-  <a href="/sel">Done</a>
     <a href="/logout">Logout</a>
 </div>
 
@@ -13,13 +12,14 @@
 </div>
 <div class="w3-quarter">
       <img src="https://today.tamu.edu/wp-content/uploads/2009/07/GettyImages-139880247.jpg" style="width:65%">
-      <p><button onclick="document.getElementById('id04').style.display='block'" style="width:auto;">Equipment</button></p>
+      <p><button onclick="document.getElementById('id04').style.display='block'" style="width:auto;">Safety Equipment</button></p>
             <!-- The Modal -->
             <div id="id04" class="w3-modal">
             <div class="w3-modal-content">
             <div class="w3-container">
             <span onclick="document.getElementById('id04').style.display='none'"
             class="w3-button w3-display-topright">&times;</span>
+            <p><a href="bio/add" class = "button">Add</a></p>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -27,7 +27,6 @@
         <th>name</th>
         <th>amount</th>
         <th>edit</th>
-        <th>broken</th>
         <th>delete</th>
       </tr>
     </thead>
@@ -41,16 +40,56 @@
             <a href={% url 'bio_lab:edit_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
           </td>
           <td>
-            <a href={% url 'bio_lab:broken_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">broken by student</a>
-          </td>
-          <td>
-          <a href={% url 'bio_lab:delete_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">delete</a>
+           <a href={% url 'bio_lab:delete_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">delete</a>
           </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
+  </div>
+  </div>
+  </div>
 </div>
+<div class="w3-quarter">
+      <img src="https://live.staticflickr.com/7712/17892462450_4b0efb8c99_c.jpg" alt="Steak" style="width:63%">
+      <p><button onclick="document.getElementById('id02').style.display='block'" style="width:auto;">Laboratory Equipment</button></p>
+            <!-- The Modal -->
+            <div id="id02" class="w3-modal">
+            <div class="w3-modal-content">
+            <div class="w3-container">
+            <span onclick="document.getElementById('id02').style.display='none'"
+            class="w3-button w3-display-topright">&times;</span>
+                <p><a align =center href="bio/add" class = "button">Add</a></p>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ItemID</th>
+                        <th>Item</th>
+                        <th>Amount</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item2 in items2 %}
+                      <tr>
+                        <td>{{item2.bio_eq_id}}</td>
+                        <td>{{item2.bio_eq_name}}</td>
+                        <td>{{item2.bio_eq_amount}}</td>
+                        <td>
+                          <a href={% url 'bio_lab:edit_with_pk' item2.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">Edit</a>
+                        </td>
+                        <td>
+                          <a href={% url 'bio_lab:delete_with_pk' item2.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">Delete</a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            </div>
+    </div>
 </body>
 <script>
 // Script to open and close sidebar

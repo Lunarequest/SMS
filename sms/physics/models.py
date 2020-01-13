@@ -12,3 +12,4 @@ class phy_eq(models.Model):
   phy_eq_name = models.CharField(max_length=50)
   phy_eq_amount = models.PositiveIntegerField()
   phy_eq_cost = models.IntegerField()
+  safety = models.BooleanField(default=False)

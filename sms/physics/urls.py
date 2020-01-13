@@ -10,5 +10,5 @@ urlpatterns = [
     path('broken/<int:phy_eq_id>', views.broken, name='broken_with_pk'),
     path('delete/<int:phy_eq_id>', views.delete, name='delete_with_pk'),
     path('/add', views.add, name='add'),
-    path('',views.console, name='physics'),
+    path('',views.display, name='physics'),
 ]

@@ -7,21 +7,26 @@ from django.db import connection
 # Create your views here.
 
 
-def console(request):
+"""def console(request):
     if request.user.groups.filter(name__in=['chem_member']):
         items = chem_con.objects.all()
         loc = 'chemistry lab'
-        items2=chem_eq.objects.all()
+        items2=chem_eq.objects.filter()
         return render(request,'chem_lab/console.html',locals())
     else:
         messages.info(request, "error 401 access denied")
-        return redirect("/sel")
+        return redirect("/sel")"""
 def edit(request):
     if request.user.groups.filter(name__in=['chem_member']):
-        items = chem_con.objects.all()
-        loc = 'chemistry lab'
-        items2=chem_eq.objects.all()
+        loc = "Chemistry"
+        items = chem_con.objects.filter(aqua=True)
+        items1 = chem_con.objects.filter(aqua=False)
+        items2 = chem_eq.objects.filter(safety=True)
+        items3 = chem_eq.objects.filter(safety=False)
         return render(request,'chem_lab/edit.html',locals())
+    else:
+        messages.info(request, "error 401 access denied")
+        return redirect("/sel")
 def edit_con(request, consumable_id):
      if request.user.groups.filter(name__in=['chem_member']):
         if(request.method == "POST"):
@@ -93,11 +98,12 @@ def add_con(request):
             amount = request.POST['q']
             reo = request.POST['reo']
             exp_date = request.POST['exp_date']
+            aqua = request.POST['Type']
             if(chem_con.objects.filter(consumable_id=con_id).exists()):
                 messages.info(request,'consumable id is not uniqe!')
                 return redirect("/chem/add_con")
             else:
-                q=chem_con(consumable_id=con_id, chem_names=name,  chem_amount=amount, exp_date=exp_date, reo=reo)
+                q=chem_con(consumable_id=con_id, chem_names=name,  chem_amount=amount, exp_date=exp_date, reo=reo, aqua=aqua)
                 q.save()
                 return redirect("/chem")
         else:
@@ -110,11 +116,12 @@ def add_eq(request):
             name = request.POST['eq_name']
             amount = request.POST['q']
             cost = request.POST['costs']
+            safety = request.POST['Safety']
             if(chem_eq.objects.filter(chem_eq_id=con_id).exists()):
                 messages.info(request,'equipment id is not uniqe!')
                 return redirect("/chem/add_eq")
             else:
-                q=chem_eq(chem_eq_id=con_id, chem_eq_names=name,  chem_eq_amount=amount, chem_eq_cost=cost)
+                q=chem_eq(chem_eq_id=con_id, chem_eq_names=name,  chem_eq_amount=amount, chem_eq_cost=cost, safety=safety)
                 q.save()
                 return redirect("/chem")
         else:

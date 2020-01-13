@@ -7,11 +7,16 @@
         <input type="text" name="name" placeholder="equipmnet name"></br>
         <input type="number" name="amount" placeholder="amount"></br>
         <input type="cost" name="cost" placeholder="cost"></br>
+        <p>Select whether the equipment is Safety Equipment or Laboratory Equipment</p>
+        <select name="safety">
+        <option value = "True">Safety</option>
+        <option value = "False">Laboratory</option>
+        </select></br>
         <input type="submit" value="Submit">
     </form>
 </div>
 <div>
-{% for message in messages %}
-    {{message}}
+{% for message1 in message %}
+    {{message1}}
 {% endfor %}
 {% endblock content %}

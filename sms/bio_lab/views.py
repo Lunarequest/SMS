@@ -5,14 +5,14 @@ from .models import bio_eq, bio_broken_eq
 from django.db import connection
 # Create your views here.
 
-def console(request):
+"""def console(request):
     if request.user.groups.filter(name__in=['bio_member']):
         items = bio_eq.objects.all()
         loc = 'biology lab'
         return render(request,'bio_lab/console.html',locals())
     else:
         messages.info(request, "error 401 access denied")
-        return redirect("/sel")
+        return redirect("/sel")"""
 def edit(request, bio_eq_id = None):
     #item = get_object_or_404(bio_eq,pk=bio_eq_id)
     if request.user.groups.filter(name__in=['bio_member']):
@@ -62,11 +62,15 @@ def broken(request, bio_eq_id= None):
        
        
 def display(request):
-    items = bio_eq.objects.all()
+    items = bio_eq.objects.filter(safety=True)
+    items2 = bio_eq.objects.filter(safety=False)
+    loc = "Biology"
     context ={
-        'items':items
+        'items':items,
+        'items2':items2,
+        'loc':loc
     }
-    return render(request,'bio_lab/edit.html',context)
+    return render(request, 'bio_lab/edit.html', context)
     
 
 
@@ -85,18 +89,19 @@ def add(request):
             bio_eq_name = request.POST['name']
             bio_eq_amount = int(request.POST['amount'])
             bio_eq_cost = int(request.POST['cost'])
+            safety = request.POST['safety']
             if bio_eq.objects.filter(bio_eq_id=bio_eq_id).exists():
-                messages=messages.info(request,"equipment id exits(each id must be unique)")
+                message = messages.info(request,"equipment id exits(each id must be unique)")
                 return redirect("/bio/add")
             elif(bio_eq_amount<=0):
-                messages.info(request,"enter a vaild ammount")
+                message = messages.info(request,"enter a vaild ammount")
                 return redirect("/bio/add")
             elif(bio_eq_cost<=0):
-                messages.info(request,"enter a vaild cost")
+                message=messages.info(request,"enter a vaild cost")
                 return redirect("/bio/add")
             else:
                 
-                p = bio_eq(bio_eq_id=bio_eq_id,bio_eq_name=bio_eq_name,bio_eq_amount=bio_eq_amount,bio_eq_cost=bio_eq_cost)
+                p = bio_eq(bio_eq_id=bio_eq_id, bio_eq_name=bio_eq_name, bio_eq_amount=bio_eq_amount, bio_eq_cost=bio_eq_cost, safety=safety)
                 p.save()
                 return redirect("/bio")
         else:

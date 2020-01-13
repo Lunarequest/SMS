@@ -6,14 +6,14 @@ from django.db import connection
 # Create your views here.
 
 
-def console(request):
+''''def console(request):
     if request.user.groups.filter(name__in=['phy_member']):
         items =phy_eq.objects.all()
         loc = 'physics lab'
         return render(request,'physicis/console.html',locals())
     else:
         messages.info(request, "error 401 access denied")
-        return redirect("/sel")
+        return redirect("/sel")'''
 
 def edit(request, phy_eq_id = None):
     #item = get_object_or_404(bio_eq,pk=bio_eq_id)
@@ -65,9 +65,13 @@ def broken(request, phy_eq_id = None):
 
 
 def display(request):
-    items = phy_eq.objects.all()
+    items = phy_eq.objects.filter(safety=True)
+    items2 = phy_eq.objects.filter(safety=False)
+    loc = "Phyisics"
     context ={
-        'items':items
+        'items':items,
+        'items2':items2,
+        'loc':loc
     }
     return render(request,'physicis/edit.html',context)
 
@@ -87,14 +91,16 @@ def add(request):
             phy_eq_name = request.POST['name']
             phy_eq_amount = int(request.POST['amount'])
             phy_eq_cost = int(request.POST['cost'])
+            safety = request.POST['safety']
             if phy_eq.objects.filter(phy_eq_id=phy_eq_id).exists():
-                return redirect("/phy/add")
+                message =messages.info(request,"equipment id is not unique")
+                return redirect("/physics/add")
             elif(phy_eq_amount<=0):
+                message =messages.info(request,"invalid ammount")
                 return redirect("/physics/add")
             else:
-                p = phy_eq(phy_eq_id=phy_eq_id,phy_eq_name=phy_eq_name, phy_eq_amount=phy_eq_amount, phy_eq_cost=phy_eq_cost)
+                p = phy_eq(phy_eq_id=phy_eq_id,phy_eq_name=phy_eq_name, phy_eq_amount=phy_eq_amount, phy_eq_cost=phy_eq_cost, safety=safety)
                 p.save()
                 return redirect("/physics")
         else:
-            loc = 'physics lab'
             return render(request,'physicis/add.html', locals())

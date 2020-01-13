@@ -6,9 +6,15 @@
         {% csrf_token %}
         <input type='number' placeholder='consumable id' name='id'></br>
         <input type='text' placeholder='name' name='chem_name'></br>
+        <p> Input in milliliter for Aqueous and grams for Salts</p>
         <input type='number' placeholder='amount' name='q'></br>
         <input type='date' placeholder='expire date' name='exp_date'></br>
         <input type='number' placeholder='reorder amount' name='reo'></br>
+        <p>Select Whether the consumable is Aqueous or a Salt: </p></br>
+        <select name ='Type'>
+          <option value="True">Aqueous</option>
+          <option value="False">Salts</option>
+        </select></br>
         <input type='submit' name='submit'>
     </form>
 </div>
