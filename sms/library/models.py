@@ -11,6 +11,7 @@ class book(models.Model):
     availabity = models.BooleanField(default=True)
 class issues(models.Model):
     book_id = models.CharField(max_length=1000, primary_key=True)
+    ISBN = models.PositiveIntegerField()
     book_name = models.CharField(max_length=500)
     student_id = models.PositiveIntegerField()
     issue_date = models.DateField()

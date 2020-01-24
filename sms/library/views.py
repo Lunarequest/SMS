@@ -7,6 +7,7 @@ from django.core.mail import EmailMessage
 from costs.models import student, grade
 from .models import book, issues, book_copy, mass_book, num_ent
 # Create your views here
+#ported
 def console(request):
     '''to display the website when requested'''
     if request.user.groups.filter(name__in=['lib_member']):
@@ -15,7 +16,6 @@ def console(request):
             items = mass_book.objects.filter(ISBN=q)
             return render(request, "library/results.html", locals())
         else:
-            cursor = connection.cursor()
             items = book.objects.all()
             item3 = issues.objects.all()
             today = datetime.date.today()
@@ -25,6 +25,7 @@ def console(request):
     else:
         message = messages.info(request, 'error 401 access denied')
         return redirect("/sel")
+#ported
 def report(request, student_id):
     if student.objects.filter(pk=student_id).exists():
         cursor = connection.cursor()
@@ -60,6 +61,7 @@ def report(request, student_id):
         to_email = teacher_email_2
         email = EmailMessage(subject=mail_subject,body=message, to=[to_email])
         email.send()
+#
 def issue(request, ind_book_id):
     '''issues one book'''
     if request.user.groups.filter(name__in=['lib_member']):
@@ -75,11 +77,11 @@ def issue(request, ind_book_id):
                 cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
                 x = cursor.fetchone()
                 book_name = x[0]
-                p = issues(book_id=ind_book_id, student_id=student_id, book_name=book_name, issue_date=date, return_date=return_date)
+                p = issues(ISBN=book_id, book_id=ind_book_id, student_id=student_id, book_name=book_name, issue_date=date, return_date=return_date)
                 p.save()
-                x= cursor.fetchone()
-                avil = x[0]
-                avil = avil-1
+                cursor.execute('''SELECT num_copy FROM library_book_copy WHERE book_name=book_name''')
+                x = cursor.fetchone()
+                avil = int(x[0]) -1
                 book_copy.objects.filter(book_name=book_name).update(num_copies_available = avil)
                 if(avil == 0):
                     book.objects.filter(book_id=book_id).update(avilabilty=False)
@@ -90,7 +92,7 @@ def issue(request, ind_book_id):
             name = str(cursor.fetchone())
             return render(request, 'library/issue.html', locals())
 
-
+#ported
 def add(request):
     '''adds books from request'''
     if request.user.groups.filter(name__in=['lib_member']):
@@ -109,9 +111,11 @@ def add(request):
                 p.save()
                 q = book(book_id=book_id, book_name=book_name,  availabity=True)
                 q.save()
+                w = num_ent(ISBN=book_id, num=0)
                 return redirect("/library")
         else:
             return render(request, 'library/add.html')
+#ported 
 def add_copy_id(request, book_id):
     from django.contrib import messages
     if request.user.groups.filter(name__in=['lib_member']):

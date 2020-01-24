@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>Chemistry Lab Database</title>
+<title>Library Database</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -67,6 +67,18 @@ body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
+.button {
+  background-color: #1c87c9;
+  border: none;
+  color: white;
+  padding: 20px 34px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
 
 </style>
 <body>
@@ -74,72 +86,86 @@ body {
 
 
 <div class="topnav">
-    <a href="#">Logout</a>
+    <a href="/logout">Logout</a>
+    <a href="/sel">Menu
 </div>
 
 
-<!-- !PAGE CONTENT! -->
-<div class="w3-main w3-content w3-padding" style="max-width:2400px;margin-top:200px">
-
   <!-- First Photo Grid-->
   <div class="w3-row-padding w3-padding-16 w3-center" id="food">
-    <div class="w3-third">
+    <div class="w3-quarter">
       <img src="https://bsmedia.business-standard.com/_media/bs/img/article/2016-01/08/full/1452249934-3831.jpg" alt="Books"
            style="width:89%">
             <!-- Trigger/Open the Modal -->
-            <p><button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Book Database</button></p>
+            <p><button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Books By ISBN</button></p>
             <!-- The Modal -->
             <div id="id01" class="w3-modal">
             <div class="w3-modal-content">
             <div class="w3-container">
             <span onclick="document.getElementById('id01').style.display='none'"
             class="w3-button w3-display-topright">&times;</span>
-                <p><button> Edit</button></p>
+               <p><a href="library/add" class = "button">Add</a></p>
                 <table>
                 <thead>
                     <tr>
                         <th>ISBN</th>
-                        <th>HSEA Code</th>
                         <th>Book name</th>
-                        <th>Author</th>
-                        <th>Last edit</th>
+                        <th>Add HSEA Book Id</th>
                     </tr>
-                </thead>
-                    <tr>
-                        <td>978-3-16-148410-0</td>
-                        <td>A001</td>
-                        <td>Sapiens</td>
-                        <td>Yuval Noah Harari</td>
-                        <td>6/3/2020</td>
-                      </tr>
-                      <tr>
-                        <td>978-3-16-148410-1</td>
-                        <td>A002</td>
-                        <td>All The Light We Cannot See</td>
-                        <td>Anthony Doerr</td>
-                        <td>6/3/2020</td>
-                      </tr>
-                      <tr>
-                        <td>978-3-16-148410-2</td>
-                        <td>A003</td>
-                        <td>Circe</td>
-                        <td>Madeline Miller</td>
-                        <td>8/3/2020</td>
-                      </tr>
-                      <tr>
-                        <td>978-3-16-148410-3</td>
-                        <td>A004</td>
-                        <td>A Monster Calls</td>
-                        <td>Patrick Ness</td>
-                        <td>8/3/2020</td>
-                      </tr>
+                  </thead>
+                  <tbody>
+                     {% for itemw in items %}
+                       <td>{{itemw.book_id}}</td>
+                       <td>{{itemw.book_name}}</td>
+                       <td>
+                           <a href = {% url 'library:add_id_with_pk' itemw.book_id %}  class = "btn btn-warnning btn-sml" role = "button">add_id</a>
+                       </td>
+                     {% endfor %}
+                  </tbody>
                 </table>
             </div>
             </div>
             </div>
         </div>
 
-    <div class="w3-third">
+    <div class="w3-quarter">
+      <img src="https://bsmedia.business-standard.com/_media/bs/img/article/2016-01/08/full/1452249934-3831.jpg" alt="Books"
+           style="width:89%">
+            <!-- Trigger/Open the Modal -->
+            <p><button onclick="document.getElementById('id02').style.display='block'" style="width:auto;">Books By HSEA Code</button></p>
+            <!-- The Modal -->
+            <div id="id02" class="w3-modal">
+            <div class="w3-modal-content">
+            <div class="w3-container">
+            <span onclick="document.getElementById('id02').style.display='none'"
+            class="w3-button w3-display-topright">&times;</span>
+               <p><button> Books By HSEA Code</button></p>
+                <table>
+                <thead>
+                    <tr>
+                        <th>ISBN</th>
+                        <th>HSEA Code</th>
+                        <th>Book name</th>
+                        <th>Issue Book</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                     {% for item in item2 %}
+                       <td>{{item.ISBN}}</td>
+                       <td>{{item.ind_book_id}}</td>
+                       <td>{{item.book_name}}</td>
+                       <td>
+                           <a href = {% url 'library:issue_with_pk' item.ind_book_id %}  class = "btn btn-warnning btn-sml" role = "button">issue</a>
+                       </td>
+                     {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+            </div>
+            </div>
+        </div>
+
+    <div class="w3-quarter">
       <img src="https://miro.medium.com/max/900/1*AQ2Sm9PbZ31L5y7hGr_sFA.jpeg" style="width:100%">
       <p><button onclick="document.getElementById('id03').style.display='block'" style="width:auto;">Issued Books</button></p>
             <!-- The Modal -->
@@ -148,99 +174,63 @@ body {
             <div class="w3-container">
             <span onclick="document.getElementById('id03').style.display='none'"
             class="w3-button w3-display-topright">&times;</span>
-                <p><button> Edit</button></p>
+                <p><button>Issued Books</button></p>
                 <table>
+                  <thead>
                     <tr>
                         <th>ISBN</th>
                         <th>HSEA Code</th>
                         <th>Book name</th>
+                        <th>Return Book</th>
                     </tr>
-                    <tr>
-                        <td>978-3-16-148411-0</td>
-                        <td>B001</td>
-                        <td>Full Moon</td>
-                        <td>P.G. Wodehouse</td>
-                        <td>6/3/2020</td>
-                      </tr>
-                      <tr>
-                        <td>978-3-16-148411-1</td>
-                        <td>B002</td>
-                        <td>IGCSE Biology</td>
-                        <td>Dave Hayward</td>
-                        <td>6/3/2020</td>
-                      </tr>
-                      <tr>
-                        <td>978-3-16-148411-2</td>
-                        <td>B003</td>
-                        <td>AS Physics</td>
-                        <td>Graham Jones</td>
-                        <td>8/3/2020</td>
-                      </tr>
-                      <tr>
-                        <td>978-3-16-148411-3</td>
-                        <td>B004</td>
-                        <td>ISC History</td>
-                        <td>Moeen Ali</td>
-                        <td>8/3/2020</td>
-                      </tr>
+                  </thead>
+                  <tbody>
+                     {% for items in item3 %}
+                       <td>{{items.ISBN}}</td>
+                       <td>{{items.book_id}}</td>
+                       <td>{{items.book_name}}</td>
+                       <td>
+                           <a href = {% url 'library:return_with_pk' items.book_id %}  class = "btn btn-warnning btn-sml" role = "button">return</a>
+                      </td>
+                     {% endfor %}
+                  </tbody>
                 </table>
             </div>
             </div>
             </div>
     </div>
-
-    <div class="w3-third">
+  <div class="w3-quarter">
       <img src="https://compote.slate.com/images/5add4696-66bf-4b6d-98a3-c7c152c79c86.jpg"
            alt="Steak" style="width:93%">
-      <p><button onclick="document.getElementById('id02').style.display='block'" style="width:auto;">Late Dues</button></p>
+      <p><button onclick="document.getElementById('id04').style.display='block'" style="width:auto;">Late Dues</button></p>
             <!-- The Modal -->
-            <div id="id02" class="w3-modal">
+            <div id="id04" class="w3-modal">
             <div class="w3-modal-content">
             <div class="w3-container">
-            <span onclick="document.getElementById('id02').style.display='none'"
+            <span onclick="document.getElementById('id04').style.display='none'"
             class="w3-button w3-display-topright">&times;</span>
-                <p><button> Edit</button></p>
+                <p><button>Late Books</button></p>
                     <table>
                     <tr>
                         <th>ISBN</th>
                         <th>HSEA Code</th>
                         <th>Book name</th>
-                        <th>Author</th>
-                        <th>Issued to</th>
-                        <th>Last edit</th>
+                        <th>Student Id</th>
+                        <th>Report Student</th>
                     </tr>
-                    <tr>
-                        <td>978-3-16-148412-0</td>
-                        <td>C001</td>
-                        <td>IGCSE Mathematics</td>
-                        <td>Dr. Dalal</td>
-                        <td> Siri Reddy</td>
-                        <td>6/3/2020</td>
-                      </tr>
-                      <tr>
-                        <td>978-3-16-148412-1</td>
-                        <td>C002</td>
-                        <td>ICSE Chemistry</td>
-                        <td>L D'Souza</td>
-                          <td>Shiva LB</td>
-                        <td>6/3/2020</td>
-                      </tr>
-                      <tr>
-                        <td>978-3-16-148412-2</td>
-                        <td>C003</td>
-                        <td>Six Of Crows</td>
-                        <td>Leigh Bardugo</td>
-                          <td>Noah Cyrus</td>
-                        <td>8/3/2020</td>
-                      </tr>
-                      <tr>
-                        <td>978-3-16-148412-3</td>
-                        <td>C004</td>
-                        <td>IGCSE Business Studies</td>
-                        <td>Dr. Vivek Jacob</td>
-                          <td>Utkarsh Sinha</td>
-                        <td>8/3/2020</td>
-                      </tr>
+                     <tbody>
+                        {% for itemx in late_book %}
+                           <tr>
+                              <td>{{itemx.ISBN}}
+                              <td>{{itemx.book_id}}</td>
+                              <td>{{itemx.book_name}}</td>
+                              <td>{{itemx.student_id}}</td>
+                              <td>
+                                 <a href = {% url 'library:report' items.student_id %}  class = "btn btn-warnning btn-sml" role = "button">Report</a>
+                              </td>
+                           </tr>
+                        {% endfor %}
+                     </tbody>
                 </table>
             </div>
             </div>
