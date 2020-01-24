@@ -72,12 +72,11 @@ def issue(request, ind_book_id):
                 cursor.execute('''SELECT ISBN FROM library_mass_book WHERE ind_book_id=ind_book_id''')
                 row = cursor.fetchone()
                 book_id = row[0]
-                p = issues(book_id=ind_book_id, student_id=student_id, issue_date=date, return_date=return_date)
-                p.save()
                 cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
-                x=cursor.fetchone()
+                x = cursor.fetchone()
                 book_name = x[0]
-                cursor.execute('''SELECT num_copies_available FROM library_book_copy WHERE book_name=book_name''')
+                p = issues(book_id=ind_book_id, student_id=student_id, book_name=book_name, issue_date=date, return_date=return_date)
+                p.save()
                 x= cursor.fetchone()
                 avil = x[0]
                 avil = avil-1
@@ -129,6 +128,9 @@ def add_copy_id(request, book_id):
             cursor.execute('''SELECT num_copies_available FROM library_book_copy WHERE book_name=book_name''')
             x = cursor.fetchone()
             num_copy = int(x[0])
+            cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
+            x = cursor.fetchone()
+            book_name = x[0]
             if(number != num_copy):
                 if(request.method == "POST"):
                     ind_book_id = request.POST['book_id']
@@ -136,7 +138,7 @@ def add_copy_id(request, book_id):
                         message = messages.info(request, "id already exists")
                         return redirect("/library")
                     else:
-                        q = mass_book(ISBN=book_id, ind_book_id=ind_book_id)
+                        q = mass_book(ISBN=book_id, ind_book_id=ind_book_id, book_name=book_name)
                         q.save()
                         number = number + 1
                         num_ent.objects.filter(ISBN=ISBN).update(num=number)
@@ -147,6 +149,7 @@ def add_copy_id(request, book_id):
     else:
         message = messages.info(request,"error 401 acesss denid")
         return redirect("/library", locals())    
+
 def delete(request, ind_book_id):
     """removes a book permenatly"""
     if request.user.groups.filter(name__in=['lib_member']):

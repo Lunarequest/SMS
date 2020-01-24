@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+{% extends 'library/base.html' %}
+{% block content %}
+<body>
+
+<div class="topnav">
+    <a href="/logout">Logout</a>
+     <a href="library/add">add</a>
+     <form method="POST">
+      {% csrf_token %}
+         <input type="text" name="q" placeholder = "Search...">
+     </form>
+</div>
+{% for mess  in message %}
+   <h3>{{mess}}</h3>
+{% endfor %}
+<div class="content">
+  <h2>Stock Database</h2>
+    <h3>Library</h3>
+
+ <table>
+ <caption>books in library</caption>
+ <thead>
+    <td>book id</td>
+    <td>name</td>
+    <td>avalible</td>
+    <td>add copy id</td>
+ </thead>
+ <tbody>
+    {% for item in items %}
+        <tr>
+            <td>{{item.book_id}}</td>
+            <td>{{item.book_name}}</td>
+            <td>{{item.availabity}}</td>
+            <td>
+                <a href = {% url 'library:add_id_with_pk' item.book_id %}  class = "btn btn-warnning btn-sml" role = "button">add_id</a>
+            </td>
+        </tr>
+    {% endfor %}
+ </tbody>
+ </table>
+ <table>
+ <caption>individuale book id</caption>
+ <thead>
+   <tr>
+      <th>ISBN</th>
+      <th>book id</th>
+      <th>issue</th>
+      <th>delete
+   </tr>
+</thead>
+<tbody>
+   {% for item in item2 %}
+   <tr>
+      <td>{{item.ISBN}}</td>
+      <td>{{item.ind_book_id}}</td>
+      <td>
+          <a href = {% url 'library:issue_with_pk' item.ind_book_id %}  class = "btn btn-warnning btn-sml" role = "button">issue</a>
+      </td>
+      <td>
+          <a href = {% url 'library:delete' item.ind_book_id %}  class = "btn btn-warnning btn-sml" role = "button">delete</a>
+      </td>
+   </tr>
+   {% endfor %}
+</tbody>
+ </table>
+ <table>
+    <caption>issued books</caption>
+ <thead>
+    <tr>
+      <th>book id</th>
+      <th>student id</th>
+      <th>issue date</th>
+      <th>return date</th>
+    </tr>
+ </thead>
+ <tbody>
+ {% for item in item3 %}
+ <tr>
+  <td>{{item.book_id}}</td>
+  <td>{{item.student_id}}</td>
+  <td>{{item.issue_date}}</td>
+  <td>{{item.return_date}}</td>
+  <td>
+        <a href = {% url 'library:return_with_pk' item.book_id %}  class = "btn btn-warnning btn-sml" role = "button">return</a>
+  </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+ <table>
+ <caption>late books</caption>
+ <thead>
+    <td>student id</td>
+    <td>book id</td>
+ </thead>
+ <tbody>
+    {% for item in late_book %}
+    <tr>
+    <td>{{item.student_id}}</td>
+    <td>{{item.book_id}}
+    </tr>
+    {% endfor %}
+ </tbody>
+ </table>
+</div>
+
+
+
+</body>
+{% endblock content %}
