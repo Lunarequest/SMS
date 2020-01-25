@@ -29,11 +29,12 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>id</th>
-        <th>name</th>
-        <th>amount</th>
-        <th>edit</th>
-        <th>delete</th>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Cost</th>
+        <th>Edit</th>
+
       </tr>
     </thead>
     <tbody>
@@ -42,11 +43,9 @@
           <td>{{item.bio_eq_id}}</td>
           <td>{{item.bio_eq_name}}</td>
           <td>{{item.bio_eq_amount}}</td>
+          <td>{{item.bio_eq_cost}}</td>
           <td>
             <a href={% url 'bio_lab:edit_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">edit</a>
-          </td>
-          <td>
-           <a href={% url 'bio_lab:delete_with_pk' item.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">delete</a>
           </td>
         </tr>
       {% endfor %}
@@ -69,11 +68,11 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>ItemID</th>
+                        <th>Id</th>
                         <th>Item</th>
                         <th>Amount</th>
+                        <th>Cost
                         <th>Edit</th>
-                        <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -82,11 +81,9 @@
                         <td>{{item2.bio_eq_id}}</td>
                         <td>{{item2.bio_eq_name}}</td>
                         <td>{{item2.bio_eq_amount}}</td>
+                        <td>{{item2.bio_eq_cost}}
                         <td>
                           <a href={% url 'bio_lab:edit_with_pk' item2.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">Edit</a>
-                        </td>
-                        <td>
-                          <a href={% url 'bio_lab:delete_with_pk' item2.bio_eq_id  %} class = "btn btn-warnning btn-sml" role = "button">Delete</a>
                         </td>
                       </tr>
                       {% endfor %}

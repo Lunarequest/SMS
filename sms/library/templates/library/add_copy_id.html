@@ -1,10 +1,11 @@
+{{books}}
 <form method = "POST" align = "center">
 {% csrf_token %}
      <input type = 'text', name = 'book_id'>
      <input type = 'submit', name = 'submit'>
 </form>
 <div align = "middle">
-{% for message in messages %}
-     <h3>{{message}}</h3>
+{% for messages in message %}
+     <h3>{{messages}}</h3>
 {% endfor %}
 </div>

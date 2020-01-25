@@ -34,7 +34,7 @@ def edit_con(request, consumable_id):
              date=request.POST['exp_date']
              chem_con.objects.filter(consumable_id=consumable_id).update(chem_amount=amount)
              chem_con.objects.filter(consumable_id=consumable_id).update(exp_date=date)
-             cursor = connection.cursor
+             cursor = connection.cursor()
              cursor.execute('''SELECT reo FROM chem_lab_chem_con WHERE consumable_id=consumable_id''')
              temp = cursor.fetchone()
              reo = int(temp[0])

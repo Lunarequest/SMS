@@ -40,7 +40,7 @@ X_FRAME_OPTIONS=DENY
 DEBUG = True
 #demployment mod
 #DEBUG = Flase
-ALLOWED_HOSTS = ['127.0.0.1',]
+ALLOWED_HOSTS = ['127.0.0.1','localhost']
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:

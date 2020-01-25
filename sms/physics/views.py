@@ -93,14 +93,14 @@ def add(request):
             phy_eq_cost = int(request.POST['cost'])
             safety = request.POST['safety']
             if phy_eq.objects.filter(phy_eq_id=phy_eq_id).exists():
-                message =messages.info(request,"equipment id is not unique")
-                return redirect("/physics/add")
+                message = messages.info(request,"equipment id is not unique")
+                return redirect("/phy/add")
             elif(phy_eq_amount<=0):
-                message =messages.info(request,"invalid ammount")
-                return redirect("/physics/add")
+                message = messages.info(request,"invalid ammount")
+                return redirect("/phy/add")
             else:
                 p = phy_eq(phy_eq_id=phy_eq_id,phy_eq_name=phy_eq_name, phy_eq_amount=phy_eq_amount, phy_eq_cost=phy_eq_cost, safety=safety)
                 p.save()
-                return redirect("/physics")
+                return redirect("/phy")
         else:
             return render(request,'physicis/add.html', locals())

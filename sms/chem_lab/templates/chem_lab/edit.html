@@ -162,7 +162,7 @@ body {
                       <tr>
                         <td>{{item.consumable_id}}</td>
                         <td>{{item.chem_names}}</td>
-                        <td>{{item.chem_amount}}ml</td>
+                        <td>{{item.chem_amount}}g</td>
                         <td>{{item.exp_date}}</td>
                         <td>
                           <a href={% url 'chem_lab:editcon' item.consumable_id  %} >Edit</a>
@@ -192,6 +192,7 @@ body {
     <th>ItemID</th>
     <th>Item</th>
     <th>Amount</th>
+    <th>Cost</th>
     <th>Edit</th>
     <!--<th>broken by student</th>-->
   </tr>
@@ -202,6 +203,7 @@ body {
           <td>{{item.chem_eq_id}}</td>
           <td>{{item.chem_eq_names}}</td>
           <td>{{item.chem_eq_amount}}</td>
+          <td>{{item.chem_eq_cost}}
           <td>
             <a href={% url 'chem_lab:editeq' item.chem_eq_id  %}>Edit</a>
           </td>
@@ -233,6 +235,7 @@ body {
                         <th>ItemID</th>
                         <th>Item</th>
                         <th>Amount</th>
+                        <th>Cost</th>
                         <th>Edit</th>
                     </tr>
                 </thead>
@@ -242,6 +245,7 @@ body {
                     <td>{{item.chem_eq_id}}</td>
                     <td>{{item.chem_eq_names}}</td>
                     <td>{{item.chem_eq_amount}}</td>
+                    <td>{{item.chem_eq_cost}}
                     <td>
                       <a href={% url 'chem_lab:editeq' item.chem_eq_id  %}>Edit</a>
                     </td>

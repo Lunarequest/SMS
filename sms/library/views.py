@@ -117,39 +117,36 @@ def add(request):
             return render(request, 'library/add.html')
 #ported 
 def add_copy_id(request, book_id):
-    from django.contrib import messages
+
     if request.user.groups.filter(name__in=['lib_member']):
         if(request.method == "POST"):
+            cursor = connection.cursor()
+            book_name = book.objects.values('book_name').filter(book_id=book_id).values_list('book_name', flat=True)
+            book_name = book_name[0]
             cursor = connection.cursor()
             ISBN = book_id
             cursor.execute('''SELECT num FROM library_num_ent WHERE ISBN=ISBN''')
             x = cursor.fetchone()
             number = int(x[0])
-            cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
-            x = cursor.fetchone()
-            book_name = x[0]
-            book_name = str(book_name)
+            cursor = connection.cursor()
             cursor.execute('''SELECT num_copies_available FROM library_book_copy WHERE book_name=book_name''')
             x = cursor.fetchone()
             num_copy = int(x[0])
-            cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
-            x = cursor.fetchone()
-            book_name = x[0]
-            if(number != num_copy):
-                if(request.method == "POST"):
-                    ind_book_id = request.POST['book_id']
-                    if mass_book.objects.filter(ind_book_id=ind_book_id).exists():
-                        message = messages.info(request, "id already exists")
-                        return redirect("/library")
-                    else:
-                        q = mass_book(ISBN=book_id, ind_book_id=ind_book_id, book_name=book_name)
-                        q.save()
-                        number = number + 1
-                        num_ent.objects.filter(ISBN=ISBN).update(num=number)
-                        return redirect("/library")
-            return redirect("/library")
+            if(request.method == "POST"):
+                ind_book_id = request.POST['book_id']
+                if mass_book.objects.filter(ind_book_id=ind_book_id).exists():
+                    message = messages.info(request, "id already exists")
+                    return render(request, 'library/add_copy_id.html', locals())
+                else:
+                    q = mass_book(ISBN=book_id, ind_book_id=ind_book_id, book_name=book_name)
+                    q.save()
+                    number = number + 1
+                    num_ent.objects.filter(ISBN=ISBN).update(num=number)
+                    return redirect("/library")
         else:
-            return render(request, 'library/add_copy_id.html')
+            book_name = book.objects.values('book_name').filter(book_id=book_id).values_list('book_name', flat=True)
+            books = str(book_name[0])
+            return render(request, 'library/add_copy_id.html',locals())
     else:
         message = messages.info(request,"error 401 acesss denid")
         return redirect("/library", locals())    
