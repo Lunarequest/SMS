@@ -1,17 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-  {{chem}}
-    <form method = "POST">
-    {% csrf_token %}
-       <input type='number' name = 'amount' placeholder="input amount" id = 'amount'></br>
-       <input type="text" name='ex_date' placeholder="input expiry date"></br>
-       <input type='submit' name ='submit'>
+  <div align='center'>
+  <div class="container">
+    {{chem}}
+      <form method = "POST">
+      {% csrf_token %}
+        <input type='number' name = 'amount' placeholder="input amount" id = 'amount'></br>
+        <input type="text" name='ex_date' placeholder="input expiry date"></br>
+        <input type='submit' name ='submit'>
+      </form>
+      </div>
+
     </form>
-    </div>
 
-  </form>
-
+  </div>
 </div>
 <div>
 {% for message in messages %}

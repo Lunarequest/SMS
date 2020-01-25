@@ -13,8 +13,8 @@ def console(request):
     if request.user.groups.filter(name__in=['lib_member']):
         if(request.method == "POST"):
             q = request.POST['q']
-            items = mass_book.objects.filter(ISBN=q)
-            return render(request, "library/results.html", locals())
+            search = mass_book.objects.filter(ISBN=q)
+            return render(request, "library/console.html", locals())
         else:
             items = book.objects.all()
             item3 = issues.objects.all()

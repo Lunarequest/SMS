@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 .w3-bar-block .w3-bar-item {padding:20px}
@@ -87,10 +88,57 @@ body {
 
 <div class="topnav">
     <a href="/logout">Logout</a>
-    <a href="/sel">Menu
+    <a href="/sel">Menu</a>
+    <div class = 'form'>
+      <form method = 'POST'>
+      {% csrf_token %}
+        <input = "search" name='q' id ='id_q'  placeholder = 'Search...'>
+      </form>
+    </div>
 </div>
-
-
+<div class="w3-main w3-content w3-padding" style="max-width:2400px;margin-top:200px">
+{% if search%}
+      <div class="w3-quarter">
+      <img src="https://bsmedia.business-standard.com/_media/bs/img/article/2016-01/08/full/1452249934-3831.jpg" alt="Books"
+           style="width:89%">
+            <!-- Trigger/Open the Modal -->
+            <p><button onclick="document.getElementById('id02').style.display='block'" style="width:auto;">Books By HSEA Code</button></p>
+            <!-- The Modal -->
+            <div id="id02" class="w3-modal">
+            <div class="w3-modal-content">
+            <div class="w3-container">
+            <span onclick="document.getElementById('id02').style.display='none'"
+            class="w3-button w3-display-topright">&times;</span>
+               <p><button> Books By HSEA Code</button></p>
+                <table>
+                <thead>
+                    <tr>
+                        <th>ISBN</th>
+                        <th>HSEA Code</th>
+                        <th>Book name</th>
+                        <th>Issue Book</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                     {% for item in search %}
+                       <td>{{item.ISBN}}</td>
+                       <td>{{item.ind_book_id}}</td>
+                       <td>{{item.book_name}}</td>
+                       <td>
+                           <a href = {% url 'library:issue_with_pk' item.ind_book_id %}  class = "btn btn-warnning btn-sml" role = "button">issue</a>
+                       </td>
+                     {% endfor %}
+                     <a href="/library">back to main page</a>
+                  </tbody>
+                </table>
+            </div>
+            </div>
+            </div>
+        </div>
+      <div>
+      
+      </div>
+{% else %}
   <!-- First Photo Grid-->
   <div class="w3-row-padding w3-padding-16 w3-center" id="food">
     <div class="w3-quarter">
@@ -241,7 +289,7 @@ body {
 
 <!-- End page content -->
 </div>
-
+{% endif %}
 <script>
 // Script to open and close sidebar
 function w3_open() {
