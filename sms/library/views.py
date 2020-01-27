@@ -131,6 +131,8 @@ def add_copy_id(request, book_id):
             cursor = connection.cursor()
             cursor.execute('''SELECT num_copies_available FROM library_book_copy WHERE book_name=book_name''')
             x = cursor.fetchone()
+            #possible reduction of code.
+           #x = book_copy.objects.values('num_copies_availabale').filter(book_name=book_name).values_list('num_copies_available', flat=True)
             num_copy = int(x[0])
             if(request.method == "POST"):
                 ind_book_id = request.POST['book_id']
