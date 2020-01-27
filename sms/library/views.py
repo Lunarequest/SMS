@@ -98,21 +98,34 @@ def add(request):
     if request.user.groups.filter(name__in=['lib_member']):
         if(request.method == "POST"):
             book_id = request.POST['book_id']
-            book_name = request.POST['book_name']
-            num_copy = int(request.POST['num_copy'])
-            if(book.objects.filter(book_id=book_id).exists()):
-                messages.info(request, "book id exits")
-                return redirect("library/add")
-            elif(num_copy <= 0):
-                messages.info(request, "enter valid amount of books")
-                return redirect("library/add")
+            if book_id:
+                book_name = request.POST['book_name']
+                if book_name:
+                    num_copy = request.POST['num_copy']
+                    if num_copy:
+                        num_copy=int(num_copy)
+                        if(book.objects.filter(book_id=book_id).exists()):
+                            messagez = messages.info(request, "book id exits")
+                            return redirect("library/add")
+                        elif(num_copy <= 0):
+                            messages.info(request, "enter valid amount of books")
+                            return redirect("library/add")
+                        else:
+                            p = book_copy(book_name=book_name, num_copy=num_copy, num_copies_available=num_copy )
+                            p.save()
+                            q = book(book_id=book_id, book_name=book_name,  availabity=True)
+                            q.save()
+                            w = num_ent(ISBN=book_id, num=0)
+                            return redirect("/library")
+                    else:
+                        messagez = messages.info(request, "Invalid input")
+                        return redirect("/library/add")
+                else:
+                    messagez = messages.info(request, "Invalid input")
+                    return redirect("/library/add")
             else:
-                p = book_copy(book_name=book_name, num_copy=num_copy, num_copies_available=num_copy )
-                p.save()
-                q = book(book_id=book_id, book_name=book_name,  availabity=True)
-                q.save()
-                w = num_ent(ISBN=book_id, num=0)
-                return redirect("/library")
+                messagez = messages.info(request, "Invalid input")
+                return redirect("/library/add")
         else:
             return render(request, 'library/add.html')
 #ported 
