@@ -7,8 +7,9 @@
     <input type = "number" placeholder = "number of copies" name="num_copy"></br>
     <input type = "submit">
 </from>
-
+<div>
 {% for message in messagez %}
-    {{message}}
+    <h1>{{message}}</h1>
 {% endfor %}
+</div>
 {% endblock content %}

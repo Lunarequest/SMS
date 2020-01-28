@@ -19,8 +19,8 @@ def console(request):
             items = book.objects.all()
             item3 = issues.objects.all()
             today = datetime.date.today()
-            item2 = mass_book.objects.all()
-            late_books = issues.objects.filter(return_date__lte=today)
+            item2 = mass_book.objects.filter(issued=False)
+            late_books = issues.objects.filter(return_date__lt=today)
             return render(request, 'library/console.html', locals())
     else:
         message = messages.info(request, 'error 401 access denied')
@@ -35,9 +35,8 @@ def report(request, student_id):
         cursor.execute('''SELECT ISBN FROM library_mass_book WHERE ind_book_id=ind_book_id''')
         row = cursor.fetchone()
         book_id = row[0]
-        cursor.execute('''SELECT book_name FORM library_book WHERE book_id=book_id''')
-        temp = cursor.fetchone()
-        book_name= temp[0]
+        book_name = book.objects.values('book_name').filter(book_id=book_id).values_list('book_name', flat=True)
+        book_name = str(book_name[0])
         cursor.execute('''SELECT sutdent_name FORM costs_student WHERE student_id=student_id ''')
         temp = cursor.fetchone()
         student_name= temp[0]
@@ -71,25 +70,23 @@ def issue(request, ind_book_id):
             if(student.objects.filter(student_id=student_id).exists()):
                 cursor = connection.cursor()
                 date = datetime.date.today()
-                cursor.execute('''SELECT ISBN FROM library_mass_book WHERE ind_book_id=ind_book_id''')
-                row = cursor.fetchone()
-                book_id = row[0]
-                cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
-                x = cursor.fetchone()
-                book_name = x[0]
+                book_id = mass_book.objects.values('ISBN').filter(ind_book_id=ind_book_id).values_list('ISBN', flat=True)
+                book_id = int(book_id[0])
+                book_name = book.objects.values('book_name').filter(book_id=book_id).values_list('book_name', flat=True)
+                book_name = book_name[0]
+                avil = book_copy.objects.filter(book_name=book_name).values_list('num_copy', flat=True)
+                avil = int(avil[0]) -1
                 p = issues(ISBN=book_id, book_id=ind_book_id, student_id=student_id, book_name=book_name, issue_date=date, return_date=return_date)
-                p.save()
-                cursor.execute('''SELECT num_copy FROM library_book_copy WHERE book_name=book_name''')
-                x = cursor.fetchone()
-                avil = int(x[0]) -1
                 book_copy.objects.filter(book_name=book_name).update(num_copies_available = avil)
-                if(avil == 0):
-                    book.objects.filter(book_id=book_id).update(avilabilty=False)
+                mass_book.objects.filter(ind_book_id=ind_book_id).update(issued=True)
+                p.save()
+                
                 return redirect("/library")
         else:
-            cursor = connection.cursor()
-            cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
-            name = str(cursor.fetchone())
+            book_id = mass_book.objects.values('ISBN').filter(ind_book_id=ind_book_id).values_list('ISBN', flat=True)
+            book_id = int(book_id[0])
+            book_name = book.objects.values('book_name').filter(book_id=book_id).values_list('book_name', flat=True)
+            name = book_name[0]
             return render(request, 'library/issue.html', locals())
 
 #ported
@@ -108,7 +105,7 @@ def add(request):
                             messagez = messages.info(request, "book id exits")
                             return redirect("library/add")
                         elif(num_copy <= 0):
-                            messages.info(request, "enter valid amount of books")
+                            messagez = messages.info(request, "enter valid amount of books")
                             return redirect("library/add")
                         else:
                             p = book_copy(book_name=book_name, num_copy=num_copy, num_copies_available=num_copy )
@@ -153,7 +150,8 @@ def add_copy_id(request, book_id):
                     message = messages.info(request, "id already exists")
                     return render(request, 'library/add_copy_id.html', locals())
                 else:
-                    q = mass_book(ISBN=book_id, ind_book_id=ind_book_id, book_name=book_name)
+                    issued = False
+                    q = mass_book(ISBN=book_id, ind_book_id=ind_book_id, book_name=book_name, issued=issued)
                     q.save()
                     number = number + 1
                     num_ent.objects.filter(ISBN=ISBN).update(num=number)

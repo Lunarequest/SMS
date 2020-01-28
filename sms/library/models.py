@@ -20,6 +20,7 @@ class mass_book(models.Model):
     ISBN = models.PositiveIntegerField()
     book_name = models.CharField(max_length=500, default='temp')
     ind_book_id = models.CharField(primary_key=True, max_length=1000)
+    issued = models.BooleanField(default=False)
 
 class num_ent(models.Model):
     ISBN = models.PositiveIntegerField(primary_key=True)
