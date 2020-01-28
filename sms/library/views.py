@@ -4,8 +4,10 @@ from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib import messages
 from django.core.mail import EmailMessage
-from costs.models import student, grade
+from costs.models import student
+from costs.models import grade as grades
 from .models import book, issues, book_copy, mass_book, num_ent
+from django.core.mail import send_mail
 # Create your views here
 #ported
 def console(request):
@@ -18,49 +20,39 @@ def console(request):
         else:
             items = book.objects.all()
             item3 = issues.objects.all()
-            today = datetime.date.today()
             item2 = mass_book.objects.filter(issued=False)
-            late_books = issues.objects.filter(return_date__lt=today)
+            late_books = issues.objects.filter(return_date__lt=datetime.date.today())
             return render(request, 'library/console.html', locals())
     else:
         message = messages.info(request, 'error 401 access denied')
         return redirect("/sel")
 #ported
-def report(request, student_id):
-    if student.objects.filter(pk=student_id).exists():
-        cursor = connection.cursor()
-        cursor.execute('''SELECT book_id FORM library_issues WHERE student_id=student_id ''')
-        temp = cursor.fetchone()
-        ind_book_id=temp[0]
-        cursor.execute('''SELECT ISBN FROM library_mass_book WHERE ind_book_id=ind_book_id''')
-        row = cursor.fetchone()
-        book_id = row[0]
-        book_name = book.objects.values('book_name').filter(book_id=book_id).values_list('book_name', flat=True)
-        book_name = str(book_name[0])
-        cursor.execute('''SELECT sutdent_name FORM costs_student WHERE student_id=student_id ''')
-        temp = cursor.fetchone()
-        student_name= temp[0]
-        cursor.execute('''SELECT sutdent_grade FORM costs_student WHERE student_id=student_id ''')
-        temp = cursor.fetchone()
-        student_grade = temp[0]
-        cursor.execute('''SELECT sutdent_section FORM costs_student WHERE student_id=student_id ''')
-        temp = cursor.fetchone()
-        student_section = temp[0]
-        cursor.execute('''SELECT  teacher_email_1 FROM costs_grade WHERE student_grade=student_grade AND student_section=student_section''')     
-        temp = cursor.fetchone()
-        teacher_email_1 = temp[0]
-        cursor.execute('''SELECT  teacher_email_2 FROM costs_grade WHERE student_grade=student_grade AND student_section=student_section''') 
-        temp = cursor.fetchone()
-        teacher_email_2 = temp[0]
-        mail_subject = "late books"
-        message = student_name + "has not returned the book: "+book_name
-        to_email = teacher_email_1
-        email = EmailMessage(subject=mail_subject,body=message, to=[to_email])
-        email.send()
-        to_email = teacher_email_2
-        email = EmailMessage(subject=mail_subject,body=message, to=[to_email])
-        email.send()
-#
+def report(request, book_id):
+    book_name = issues.objects.values('book_name').filter(book_id=book_id).values_list('book_name', flat=True)
+    book_name = book_name[0]
+    student_id = issues.objects.values('student_id').filter(book_id=book_id).values_list('student_id', flat=True)
+    student_id = int(student_id[0])
+    student_name = student.objects.values('student_name').filter(student_id=student_id).values_list('student_name', flat=True)
+    student_name = str(student_name[0])
+    grade = student.objects.values('student_grade').filter(student_id=student_id).values_list('student_grade', flat=True)
+    grade = int(grade[0])
+    section = student.objects.values('student_section').filter(student_id=student_id).values_list('student_section', flat=True)
+    section = str(section[0])
+    email1 = grades.objects.values('teacher_email_1').filter(student_grade=grade).filter(student_section=section).values_list('teacher_email_1', flat=True)
+    email1 = str(email1[0])
+    email2 = grades.objects.values('teacher_email_2').filter(student_grade=grade).filter(student_section=section).values_list('teacher_email_2', flat=True)
+    email2 = str(email2[0])
+    msg = str(student_name + " has not returend " + book_name + "please ensure it is returned")
+    send_mail(
+        'late dues',
+        msg,
+        'localhost',
+        [email1,email2],
+        fail_silently=False,
+    )
+    return redirect('/library')
+    
+#ported
 def issue(request, ind_book_id):
     '''issues one book'''
     if request.user.groups.filter(name__in=['lib_member']):
@@ -127,35 +119,19 @@ def add(request):
             return render(request, 'library/add.html')
 #ported 
 def add_copy_id(request, book_id):
-
     if request.user.groups.filter(name__in=['lib_member']):
         if(request.method == "POST"):
-            cursor = connection.cursor()
             book_name = book.objects.values('book_name').filter(book_id=book_id).values_list('book_name', flat=True)
             book_name = book_name[0]
-            cursor = connection.cursor()
-            ISBN = book_id
-            cursor.execute('''SELECT num FROM library_num_ent WHERE ISBN=ISBN''')
-            x = cursor.fetchone()
-            number = int(x[0])
-            cursor = connection.cursor()
-            cursor.execute('''SELECT num_copies_available FROM library_book_copy WHERE book_name=book_name''')
-            x = cursor.fetchone()
-            #possible reduction of code.
-           #x = book_copy.objects.values('num_copies_availabale').filter(book_name=book_name).values_list('num_copies_available', flat=True)
-            num_copy = int(x[0])
-            if(request.method == "POST"):
-                ind_book_id = request.POST['book_id']
-                if mass_book.objects.filter(ind_book_id=ind_book_id).exists():
-                    message = messages.info(request, "id already exists")
-                    return render(request, 'library/add_copy_id.html', locals())
-                else:
-                    issued = False
-                    q = mass_book(ISBN=book_id, ind_book_id=ind_book_id, book_name=book_name, issued=issued)
-                    q.save()
-                    number = number + 1
-                    num_ent.objects.filter(ISBN=ISBN).update(num=number)
-                    return redirect("/library")
+            ind_book_id = request.POST['book_id']
+            if mass_book.objects.filter(ind_book_id=ind_book_id).exists():
+                message = messages.info(request, "id already exists")
+                return render(request, 'library/add_copy_id.html', locals())
+            else:
+                issued = False
+                q = mass_book(ISBN=book_id, ind_book_id=ind_book_id, book_name=book_name, issued=issued)
+                q.save()
+                return redirect("/library")
         else:
             book_name = book.objects.values('book_name').filter(book_id=book_id).values_list('book_name', flat=True)
             books = str(book_name[0])

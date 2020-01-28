@@ -9,5 +9,5 @@ urlpatterns = [
     path('delete/<str:ind_book_id>', views.delete, name='delete'),
     path('return/<int:book_id>', views.return_book, name='return_with_pk'),
     path('add_id/<int:book_id>', views.add_copy_id, name='add_id_with_pk'),
-    path('report/<int:student_id', views.report, name='report')
+    path('report/<int:book_id>', views.report, name='report')
 ]

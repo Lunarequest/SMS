@@ -272,14 +272,14 @@ body {
                         <th>Report Student</th>
                     </tr>
                      <tbody>
-                        {% for itemx in late_book %}
+                        {% for itemx in late_books %}
                            <tr>
                               <td>{{itemx.ISBN}}
                               <td>{{itemx.book_id}}</td>
                               <td>{{itemx.book_name}}</td>
                               <td>{{itemx.student_id}}</td>
                               <td>
-                                 <a href = {% url 'library:report' items.student_id %}  class = "btn btn-warnning btn-sml" role = "button">Report</a>
+                                 <a href = {% url 'library:report' itemx.book_id %}  class = "btn btn-warnning btn-sml" role = "button">Report</a>
                               </td>
                            </tr>
                         {% endfor %}
