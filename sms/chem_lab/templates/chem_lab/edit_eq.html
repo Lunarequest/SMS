@@ -4,7 +4,9 @@
    <div class="container">
       <form method = "POST">
       {% csrf_token %}
+         <p>Input number of {{name}}</p>
          <input type='number' name = 'amount' placeholder="amount" id = 'amount'></br>
+         <p>Input cost of {{name}}</p>
          <input type="number" name='costs' placeholder="cost" id = 'costs'></br>
          <input type='submit' name ='submit'>
       </form>

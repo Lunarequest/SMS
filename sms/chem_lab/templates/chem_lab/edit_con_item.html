@@ -5,7 +5,9 @@
     {{chem}}
       <form method = "POST">
       {% csrf_token %}
+        <p>Input New Amount of {{name}} in ml/gram</p>
         <input type='number' name = 'amount' placeholder="input amount" id = 'amount'></br>
+        <p>Input new Expiry Date of {{name}}</p>
         <input type="date" name='exp_date' placeholder="input expiry date"></br>
         <input type='submit' name ='submit'>
       </form>
@@ -20,7 +22,8 @@
 {{message}}
 {% endfor %}
 </div>
-{% endblock content %}
 <script type = "text/javascript">
-   document.getElementById("amount").value = "0";
+  document.getElementById("amount").value = "0";
 </script>
+{% endblock content %}
+

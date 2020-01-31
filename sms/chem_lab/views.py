@@ -51,7 +51,9 @@ def edit_con(request, consumable_id):
                 email = EmailMessage(subject=email_subject, body=message, to=[to_email])
                 email.send()
         else:
-            return render(request,'chem_lab/edit_con_item.html')
+            name =chem_con.objects.values('chem_names').filter(consumable_id=consumable_id).values_list('chem_names', flat=True)
+            name = name[0]
+            return render(request,'chem_lab/edit_con_item.html', locals())
 
 def broken(request, chem_eq_id):
      if request.user.groups.filter(name__in=['chem_member']):
@@ -85,10 +87,8 @@ def edit_eq(request, chem_eq_id):
                 chem_eq.objects.filter(chem_eq_id=chem_eq_id).update(chem_eq_cost=cost)
             return redirect("/chem")
         else:
-            cursor = connection.cursor()
-            cursor.execute('''SELECT chem_names from chem_lab_chem_con where consumable_id=consumable_id''')
-            row=cursor.fetchone()
-            chem = row[0]
+            name = chem_eq.objects.values('chem_eq_names').filter(chem_eq_id=chem_eq_id).values_list('chem_eq_names', flat=True)
+            name = name[0]
             return render(request,'chem_lab/edit_eq.html', locals())
 def add_con(request):
     if request.user.groups.filter(name__in=['chem_member']):
@@ -107,7 +107,6 @@ def add_con(request):
                 q.save()
                 return redirect("/chem")
         else:
-
             return render(request,'chem_lab/add_con.html')
 def add_eq(request):
       if request.user.groups.filter(name__in=['chem_member']):
