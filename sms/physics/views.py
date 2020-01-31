@@ -29,9 +29,7 @@ def edit(request, phy_eq_id = None):
 
             return redirect("/physics")
         else:
-            cursor = connection.cursor()
-            cursor.execute('''SELECT phy_eq_name from physics_phy_eq where phy_eq_id=phy_eq_id''')
-            row = cursor.fetchone()
+            row = phy_eq.objects.values('phy_eq_name').filter(phy_eq_id=phy_eq_id).values_list('phy_eq_name', flat=True)
             name = str(row[0])
             return render(request,'physicis/edit_item.html', locals())
 #this was all me

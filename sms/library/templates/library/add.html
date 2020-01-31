@@ -2,8 +2,11 @@
 {% block content %}
 <form method = "POST" align = "center">
 {% csrf_token %}
-    <input type = "number" placeholder = "book id" name = "book_id"></br>
+    <p>Input ISBN of Boook</p>
+    <input type = "number" placeholder = "book id" name = "ISBN""></br>
+    <p>Input Name of Book</p>
     <input type = "text" placeholder = "name of book" name="book_name"></br>
+    <p>Input number of Copies</p>
     <input type = "number" placeholder = "number of copies" name="num_copy"></br>
     <input type = "submit">
 </from>

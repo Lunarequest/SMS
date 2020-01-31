@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3>you are editing {{name}}</h3>
 <div class="container">
     <div align="center">
         <form method = "POST">
         {% csrf_token %}
+            <p>Input Number of {{name}}</p>
             <input type="number" name="amount" placeholder = "amount" id = "amount" ></br>
-            <input type"number" name="costs" placeholder = "costs" id = "costs"></br>
+            <p>Input Number of {{name}}</p>
+            <input type="number" name="costs" placeholder = "costs" id = "costs"></br>
             <input type="submit" name="Submit">
         </form>
         </div>

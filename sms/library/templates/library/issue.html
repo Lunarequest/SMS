@@ -3,7 +3,9 @@
 {{name}}
 <form method = "POST" align="center">
 {% csrf_token %}
+    <p>Input Student Id</p> 
     <input type = "number" placeholder = "student id" name = "student_id"></br>
+    <p>Input Return Date</p>
     <input type = "date"  name = "rt_date"></br>
     <input type = "submit">
 </form>

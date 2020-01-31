@@ -1,7 +1,8 @@
-{{books}}
+
 <form method = "POST" align = "center">
 {% csrf_token %}
-     <input type = 'text', name = 'book_id'>
+     <p>Input HSEA Code for{{books}}</p>
+     <input type = 'text', name = 'HSEA Code'>
      <input type = 'submit', name = 'submit'>
 </form>
 <div align = "middle">
