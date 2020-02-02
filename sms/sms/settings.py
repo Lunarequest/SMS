@@ -49,9 +49,7 @@ if DEBUG:
     EMAIL_HOST_USER = 'Teampaasta@gmail.com'
     EMAIL_HOST_PASSWORD = '123passkey'
 
-#MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # Application definition
 
@@ -64,7 +62,6 @@ INSTALLED_APPS = [
     'sel',
     'library',
     'costs',
-    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
