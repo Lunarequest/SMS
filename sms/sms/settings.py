@@ -42,19 +42,17 @@ DEBUG = True
 #DEBUG = Flase
 ALLOWED_HOSTS = ['127.0.0.1','localhost']
 if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_HOST = 'localhost'
-    EMAIL_PORT = 1025
-    EMAIL_HOST_USER = ''
-    EMAIL_HOST_PASSWORD = ''
-    EMAIL_USE_TLS = False
-    DEFAULT_FROM_EMAIL = 'testing@example.com'
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_USE_TLS = True
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = 'Teampaasta@gmail.com'
+    EMAIL_HOST_PASSWORD = '123passkey'
 
 #MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -66,7 +64,6 @@ INSTALLED_APPS = [
     'sel',
     'library',
     'costs',
-    'django_jenkins',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -85,11 +82,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-JENKINS_TASKS = (
-    'django_jenkins.tasks.run_pep8',
-    'django_jenkins.tasks.run_pyflakes',
-    'django_jenkins.tasks.run_sloccount'
-)
 
 ROOT_URLCONF = 'sms.urls'
 
