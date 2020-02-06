@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from .models import chem_con, chem_eq, ch_broken_eq
+from costs.models import  super_email
 from django.db import connection
 # Create your views here.
 
@@ -45,11 +46,17 @@ def edit_con(request, consumable_id):
                 chem_name = temp[0]
                 email_subject = "reorder " + chem_name
                 message = "please reorder " + chem_name
-                cursor.execute('''SELECT supervisor_email FROM costs_super_email''')
-                temp = cursor.fetchone()
+                temp = super_email.objects.values("supervisor_email").filter('*').values_list('supervisor_email ')
                 to_email = temp[0]
-                email = EmailMessage(subject=email_subject, body=message, to=[to_email])
-                email.send()
+                msg = str(student_name + " has not returend " + book_name + "please ensure it is returned")
+                send_mail(
+                'late dues',
+                msg,
+                'localhost',
+                [to_email],
+                fail_silently=False,
+            )
+                
         else:
             name =chem_con.objects.values('chem_names').filter(consumable_id=consumable_id).values_list('chem_names', flat=True)
             name = name[0]

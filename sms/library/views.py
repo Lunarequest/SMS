@@ -128,7 +128,7 @@ def add_copy_id(request, book_id):
                 message = messages.info(request, "id already exists")
                 return render(request, 'library/add_copy_id.html', locals())
             else:
-                issued = False
+                issued = True
                 q = mass_book(ISBN=book_id, ind_book_id=ind_book_id, book_name=book_name, issued=issued)
                 q.save()
                 return redirect("/library")
@@ -162,12 +162,11 @@ def return_book(request, book_id):
     if request.user.groups.filter(name__in=['lib_member']):
         issues.objects.filter(pk=book_id).delete()
         cursor = connection.cursor()
-        cursor.execute('''SELECT book_name FROM library_book WHERE book_id=book_id''')
-        row = cursor.fetchone()
-        book_name = row[0]
-        cursor.execute('''SELECT num_copies_available FROM library_book_copy WHERE book_name=book_name''')
-        row = cursor.fetchone()
-        avil = row[0]
-        avil = avil + 1
-        book_copy.objects.filter(book_name=book_name).update(num_copies_available=avil)
+        ind_book_id = book_id
+        print(ind_book_id)
+        issued = True
+        if mass_book.objects.filter(pk=ind_book_id):
+            mass_book.objects.filter(ind_book_id=ind_book_id).update(issued=False)
+        else:
+            print('fail')
         return redirect("/library")
