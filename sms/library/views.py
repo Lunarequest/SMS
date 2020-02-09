@@ -128,7 +128,7 @@ def add_copy_id(request, book_id):
                 message = messages.info(request, "id already exists")
                 return render(request, 'library/add_copy_id.html', locals())
             else:
-                issued = True
+                issued = False
                 q = mass_book(ISBN=book_id, ind_book_id=ind_book_id, book_name=book_name, issued=issued)
                 q.save()
                 return redirect("/library")
